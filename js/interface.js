@@ -10,7 +10,8 @@ Fliplet.Widget.generateInterface({
       name: 'prompt',
       type: 'textarea',
       label: 'Prompt',
-      default: ''
+      default: '',
+      rows: 12
     }
   ]
 });
