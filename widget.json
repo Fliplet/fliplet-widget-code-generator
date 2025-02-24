@@ -1,0 +1,37 @@
+{
+  "name": "Code generator",
+  "package": "com.fliplet.code-generator",
+  "version": "1.0.0",
+  "icon": "img/icon.png",
+  "tags": ["type:component", "category:general", "beta:true"],
+  "provider_only": false,
+  "references": [],
+  "settings": {
+    "asyncRendering": true,
+    "interfaceWidgetPackage": "com.fliplet.helper-configuration",
+    "hideThemeSettings": true
+  },
+  "html_tag": "div",
+  "interface": {
+  "interface": {
+    "dependencies": ["fliplet-core", "fliplet-studio-ui", "fliplet-datasources"],
+    "assets": ["js/interface.js"]
+  },
+    "assets": [
+      "js/interface.js"
+    ]
+  },
+  "build": {
+    "dependencies": [
+      "jquery",
+      "bootstrap",
+      "fliplet-core",
+      "fliplet-helper"
+    ],
+    "assets": [
+      "css/build.css",
+      "js/build.js"
+    ],
+    "appAssets": []
+  }
+}
