@@ -34,8 +34,7 @@ Fliplet.Widget.instance({
         AI.fields
       );
 
-      let systemPrompt = `
-You are to only return the HTML, CSS, JS for the following user request. 
+      let systemPrompt = `You are to only return the HTML, CSS, JS for the following user request. 
 
 The format of the response should be as follows: 
 
@@ -56,7 +55,10 @@ document.addEventListener('DOMContentLoaded', function() {
 For the HTML do not include any head tags, just return the html for the body. 
 Use bootstrap for css and styling.
 Do not include any backticks in the response.
-Ensure there are no syntax errors in the code and that column names with spaced in them are wrapped with square brackets. 
+Ensure there are no syntax errors in the code and that column names with spaced in them are wrapped with square brackets.
+Add inline comments for the code so technical users can make edits to the code. 
+Add try catch blocks in the code to catch any errors and log the errors to the console. 
+Ensure you chain all the promises correctly with return statements.
 
 If you get asked to use datasource js api for e.g. if you need to save data from a form to a datasource or need to read data dynmaic data to show it on the screen you need to use the following api's: 
 
@@ -281,7 +283,10 @@ connection.insert({
 "deletedAt": null,
 "dataSourceId": 1392773
 }
-`;
+
+If you asked to build a feature that requries navigating the user to another screen use the navigate JS API to do this: 
+
+Fliplet.Navigate.screen('Menu') where it accepts the screen name as a parameter.`;
 
       async function queryAI(prompt) {
         const result = await Fliplet.AI.createCompletion({
