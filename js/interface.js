@@ -22,9 +22,12 @@ Fliplet.Widget.generateInterface({
           ],
         };
       },
-      change: function (value) {
-        debugger;
-        console.log("change", value);
+      onEvent: function(eventName, data) {
+        debugger
+        // Listen for events fired from the provider
+        if (eventName === "change") {
+          console.log("change", data);
+        }
       },
       beforeSave: function (value) {
         return value && value.id;
