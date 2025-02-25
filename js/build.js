@@ -28,7 +28,7 @@ Fliplet.Widget.instance({
 
       AI.fields = _.assign(
         {
-          aiModel: "",
+          dataSourceId: "",
           prompt: "",
         },
         AI.fields
@@ -290,7 +290,7 @@ Fliplet.Navigate.screen('Menu') where it accepts the screen name as a parameter.
 
       async function queryAI(prompt) {
         const result = await Fliplet.AI.createCompletion({
-          model: AI.fields.aiModel,
+          model: 'gpt-4o',
           messages: [
             { role: "system", content: systemPrompt },
             { role: "user", content: prompt },
