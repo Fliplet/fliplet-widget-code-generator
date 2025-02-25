@@ -39,7 +39,7 @@ Fliplet.Widget.generateInterface({
       type: 'html',
       html: '<input type="button" class="btn btn-primary generate-code" value="Generate code" />',
       ready: function() {
-        $(this).find('.generate-code').on('click', function() {
+        $(this.$el).find('.generate-code').on('click', function() {
           alert('Generate code');
         });
       }
