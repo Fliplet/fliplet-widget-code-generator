@@ -15,7 +15,7 @@ Fliplet.Widget.instance({
       if (Fliplet.Env.get("interact")) {
         $aiContainer.html(`
           <div class="component-overlay">
-            <p>The code will be generated when you save the page.</p>
+            <p>The code will be generated when you press the <strong>Generate code</strong> button below.</p>
           </div>
         `);
       } else {
@@ -60,13 +60,11 @@ Add inline comments for the code so technical users can make edits to the code.
 Add try catch blocks in the code to catch any errors and log the errors to the console. 
 Ensure you chain all the promises correctly with return statements.
 
-If you get asked to use datasource js api for e.g. if you need to save data from a form to a datasource or need to read data dynmaic data to show it on the screen you need to use the following api's: 
+If you get asked to use datasource js api for e.g. if you need to save data from a form to a datasource or need to read data dynamic data to show it on the screen you need to use the following api's: 
 
-### Connect to a data source by Name
+### Connect to a data source by its ID using the 'connect' method.
 
-You can also connect to a datas ource by its name (case-sensitive) using the 'connectByName' method.
-
-Fliplet.DataSources.connectByName("Attendees").then(function (connection) {
+Fliplet.DataSources.connect(dataSourceId).then(function (connection) {
   // check below for the list of instance methods for the connection object
 });
 
@@ -290,7 +288,7 @@ Fliplet.Navigate.screen('Menu') where it accepts the screen name as a parameter.
 
       async function queryAI(prompt) {
         const result = await Fliplet.AI.createCompletion({
-          model: 'gpt-4o',
+          model: "gpt-4o",
           messages: [
             { role: "system", content: systemPrompt },
             { role: "user", content: prompt },
@@ -346,13 +344,15 @@ Fliplet.Navigate.screen('Menu') where it accepts the screen name as a parameter.
           });
 
           // Save HTML
-          const layoutResponse = await Fliplet.API.request({
-            url: `v1/apps/${appId}/pages/${pageId}/rich-layout`,
-            method: "PUT",
-            data: {
-              richLayout: parsedContent.html,
-            },
-          });
+          // const layoutResponse = await Fliplet.API.request({
+          //   url: `v1/apps/${appId}/pages/${pageId}/rich-layout`,
+          //   method: "PUT",
+          //   data: {
+          //     richLayout: parsedContent.html,
+          //   },
+          // });
+          const layoutResponse = parsedContent.html;
+          $aiContainer.html(`<div class="generated-code">${layoutResponse}</div>`);
 
           return { settingsResponse, layoutResponse };
         } catch (error) {
@@ -362,7 +362,6 @@ Fliplet.Navigate.screen('Menu') where it accepts the screen name as a parameter.
       }
 
       if (
-        !Fliplet.Env.get("interact") &&
         !$(document).find(".code-generator-content").length
       ) {
         return queryAI(AI.fields.prompt)
