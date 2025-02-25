@@ -47,7 +47,8 @@ function generateCode() {
   const prompt = Fliplet.Helper.field("prompt").get();
   const dataSourceId = Fliplet.Helper.field("dataSourceId").get();
   if (!prompt || !dataSourceId) {
-    Fliplet.UI.toast("Please enter a prompt and select a data source");
+    alert("Please enter a prompt and select a data source");
+    // Fliplet.UI.toast("Please enter a prompt and select a data source");
     return;
   }
   queryAI(prompt).then(function (parsedContent) {
@@ -99,21 +100,19 @@ function queryAI(prompt) {
 }
 
 function saveGeneratedCode(parsedContent) {
-  return Fliplet.API.request({
-    url: `v1/apps/${appId}/pages/${pageId}/settings`,
-    method: "POST",
-    data: {
-      customSCSS: parsedContent.css,
-      customJS: parsedContent.javascript,
-    },
-  }).then(function (response) {
-    const layoutResponse = parsedContent.html;
-    $aiContainer.html(`<div class="generated-code">${layoutResponse}</div>`);
-
-    return { settingsResponse, layoutResponse };
-  });
+  const layoutResponse = parsedContent.html;
+  $aiContainer.html(`
+    <style>
+      ${parsedContent.css}
+    </style>
+    <script>
+      ${parsedContent.javascript}
+    </script>
+    <div class="generated-code">
+      ${layoutResponse}
+    </div>
+  `);
 }
-
 
 let systemPrompt = `You are to only return the HTML, CSS, JS for the following user request. 
 
