@@ -1,3 +1,4 @@
+var selectedDataSourceId = null;
 Fliplet.Widget.generateInterface({
   fields: [
     {
@@ -23,10 +24,9 @@ Fliplet.Widget.generateInterface({
         };
       },
       onEvent: function(eventName, data) {
-        debugger
         // Listen for events fired from the provider
-        if (eventName === "change") {
-          console.log("change", data);
+        if (eventName === "dataSourceSelect") {
+          selectedDataSourceId = data.id;
         }
       },
       beforeSave: function (value) {
@@ -52,8 +52,7 @@ Fliplet.Widget.generateInterface({
 
 function generateCode() {
   const prompt = Fliplet.Helper.field("prompt").get();
-  const dataSourceId = Fliplet.Helper.field("dataSourceId").get();
-  if (!prompt || !dataSourceId) {
+  if (!prompt || !selectedDataSourceId) {
     alert("Please enter a prompt and select a data source");
     // Fliplet.UI.toast("Please enter a prompt and select a data source");
     return;
@@ -151,7 +150,7 @@ If you get asked to use datasource js api for e.g. if you need to save data from
 
 ### Connect to a data source by its ID using the 'connect' method.
 
-Fliplet.DataSources.connect(dataSourceId).then(function (connection) {
+Fliplet.DataSources.connect(selectedDataSourceId).then(function (connection) {
   // check below for the list of instance methods for the connection object
 });
 
