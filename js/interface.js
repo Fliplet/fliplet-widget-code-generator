@@ -37,15 +37,22 @@ Fliplet.Widget.generateInterface({
       type: "html",
       html: '<input type="button" class="btn btn-primary generate-code" value="Generate code" />',
       ready: function () {
-        $(this.$el).find(".generate-code").on("click", generateCode(this));
+        $(this.$el).find(".generate-code").on("click", generateCode);
       },
     },
   ],
 });
 
-function generateCode(widget) {
-  debugger;
-  alert("Generate code");
+function generateCode() {
+  const prompt = Fliplet.Helper.field("prompt");
+  const dataSourceId = Fliplet.Helper.field("dataSourceId");
+  if (!prompt || !dataSourceId) {
+    Fliplet.UI.toast("Please enter a prompt and select a data source");
+    return;
+  }
+  queryAI(prompt).then(function (parsedContent) {
+    saveGeneratedCode(parsedContent);
+  });
 }
 
 function queryAI(prompt) {
