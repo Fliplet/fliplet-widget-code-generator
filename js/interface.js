@@ -22,6 +22,10 @@ Fliplet.Widget.generateInterface({
           ],
         };
       },
+      change: function (value) {
+        debugger;
+        console.log("change", value);
+      },
       beforeSave: function (value) {
         return value && value.id;
       },
