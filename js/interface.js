@@ -35,14 +35,14 @@ Fliplet.Widget.generateInterface({
       default: '',
       rows: 12
     },
-    
     {
       name: 'generateCode',
       type: 'html',
-      default: '<button class="btn btn-primary">Generate code</button>',
-      label: 'Generate code',
-      onClick: function() {
-        alert('Generate code');
+      html: '<button class="btn btn-primary">Generate code</button>',
+      ready: function() {
+        this.el.addEventListener('click', function() {
+          alert('Generate code');
+        });
       }
     }
   ]
