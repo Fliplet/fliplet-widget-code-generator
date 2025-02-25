@@ -36,9 +36,8 @@ Fliplet.Widget.generateInterface({
       rows: 12
     },
     {
-      name: 'generateCode',
       type: 'html',
-      html: '<button class="btn btn-primary">Generate code</button>',
+      html: '<button class="btn btn-primary">Generate codeee</button>',
       ready: function() {
         this.el.addEventListener('click', function() {
           alert('Generate code');
