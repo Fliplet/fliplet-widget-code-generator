@@ -1,6 +1,6 @@
 {
-  "name": "Code generator",
-  "package": "com.fliplet.code-generator",
+  "name": "Code generator DEV",
+  "package": "com.fliplet.code-generator-dev",
   "version": "1.0.0",
   "icon": "img/icon.png",
   "tags": ["type:component", "category:general", "beta:true"],
