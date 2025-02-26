@@ -107,7 +107,7 @@ function queryAI(prompt) {
 
 function saveGeneratedCode(parsedContent) {
   const layoutResponse = parsedContent.html;
-  $aiContainer.html(`
+  $(document).find('.code-generator-content').html(`
     <style>
       ${parsedContent.css}
     </style>

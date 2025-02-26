@@ -14,7 +14,7 @@ Fliplet.Widget.instance({
       const pageId = Fliplet.Env.get("pageId");
       const appId = Fliplet.Env.get("appId");
       const AI = this;
-      const $aiContainer = $(AI.$el);
+      const $aiContainer = $(document).find(".code-generator-content");// $(AI.$el);
 
       if (Fliplet.Env.get("interact")) {
         $aiContainer.html(`
