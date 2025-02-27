@@ -12,8 +12,6 @@ Fliplet.Widget.instance({
       // Initialize children components when this widget is ready
       Fliplet.Widget.initializeChildren(this.$el, this);
 
-      const pageId = Fliplet.Env.get("pageId");
-      const appId = Fliplet.Env.get("appId");
       const AI = this;
       const $aiContainer = $(document).find(".code-generator-content");// $(AI.$el);
 
@@ -21,12 +19,6 @@ Fliplet.Widget.instance({
         $aiContainer.html(`
           <div class="component-overlay">
             <p>The code will be generated when you press the <strong>Generate code</strong> button below.</p>
-          </div>
-        `);
-      } else {
-        $aiContainer.html(`
-          <div class="overlay-loading">
-            <p>Generating code, please wait...</p>
           </div>
         `);
       }
@@ -336,53 +328,54 @@ Fliplet.Navigate.screen('Menu') where it accepts the screen name as a parameter.
         };
       }
 
-      async function saveGeneratedCode(parsedContent) {
-        try {
-          // Save CSS and JavaScript
-          const settingsResponse = await Fliplet.API.request({
-            url: `v1/apps/${appId}/pages/${pageId}/settings`,
-            method: "POST",
-            data: {
-              customSCSS: parsedContent.css,
-              customJS: parsedContent.javascript,
-            },
-          });
+      function saveGeneratedCode(parsedContent) {
+        const layoutResponse = parsedContent.html;
+        $(document).find('.code-generator-content').html(`
+          <style>
+            ${parsedContent.css}
+          </style>
+          <script>
+            ${parsedContent.javascript}
+          </script>
+          <div class="generated-code">
+            ${layoutResponse}
+          </div>
+        `);
 
-          // Save HTML
-          // const layoutResponse = await Fliplet.API.request({
-          //   url: `v1/apps/${appId}/pages/${pageId}/rich-layout`,
-          //   method: "PUT",
-          //   data: {
-          //     richLayout: parsedContent.html,
-          //   },
-          // });
-          const layoutResponse = parsedContent.html;
-          $aiContainer.html(`<div class="generated-code">${layoutResponse}</div>`);
-
-          return { settingsResponse, layoutResponse };
-        } catch (error) {
-          console.error("Error saving code:", error);
-          throw error;
-        }
+        return true;
       }
 
-      // if (
-      //   !$(document).find(".code-generator-content").length
-      // ) {
-      //   return queryAI(AI.fields.prompt)
-      //     .then(function (parsedContent) {
-      //       // Save the generated code
-      //       return saveGeneratedCode(parsedContent);
-      //     })
-      //     .then(() => {
-      //       // Reload the page to show the newly generated content
-      //       window.location.reload();
-      //     })
-      //     .catch(function (error) {
-      //       console.error("Error in process:", error);
-      //       return Promise.reject(error);
-      //     });
-      // }
+      if (
+        AI.fields.dataSourceId &&
+        AI.fields.prompt
+      ) {
+        
+        $aiContainer.html(`
+          <div class="overlay-loading">
+            <p>Generating code, please wait...</p>
+          </div>
+        `);
+
+        return queryAI(AI.fields.prompt)
+          .then(function (parsedContent) {
+            // Save the generated code
+            return saveGeneratedCode(parsedContent);
+          })
+          .then(() => {
+            // Reload the page to show the newly generated content
+            // window.location.reload();
+          })
+          .catch(function (error) {
+            console.error("Error in process:", error);
+            return Promise.reject(error);
+          });
+      } else {
+        $aiContainer.html(`
+          <div class="overlay-loading">
+            <p>Please enter a data source ID and prompt</p>
+          </div>
+        `);
+      }
     },
   },
 });
