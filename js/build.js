@@ -53,6 +53,6 @@ Fliplet.Widget.instance({
       //       return Promise.reject(error);
       //     });
       }
-    },
+    // },
   },
 });
