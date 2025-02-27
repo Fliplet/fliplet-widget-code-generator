@@ -71,13 +71,13 @@ Fliplet.Widget.generateInterface({
       rows: 12,
     },
     {
-      type: 'toggle',
-      name: 'regenerateCode',
-      label: 'Regenerate code',
-      description: 'Regenerate code',
-      toggleLabel: 'Regenerate',
-      default: false
-    }
+      type: "toggle",
+      name: "regenerateCode",
+      label: "Regenerate code",
+      description: "Regenerate code",
+      toggleLabel: "Regenerate",
+      default: false,
+    },
   ],
 });
 
@@ -99,46 +99,46 @@ function generateCode() {
 }
 
 function queryAI(prompt) {
-  const result = Fliplet.AI.createCompletion({
+  return Fliplet.AI.createCompletion({
     model: "gpt-4o",
     messages: [
       { role: "system", content: systemPrompt },
       { role: "user", content: prompt },
     ],
     temperature: 0,
+  }).then(function (result) {
+    // Parse the response
+    const response = result.choices[0].message.content;
+
+    // Initialize variables
+    let html = "";
+    let css = "";
+    let javascript = "";
+
+    // Extract HTML
+    const htmlMatch = response.match(/### HTML\n([\s\S]*?)(?=### CSS|$)/);
+    if (htmlMatch) {
+      html = htmlMatch[1].trim();
+    }
+
+    // Extract CSS
+    const cssMatch = response.match(/### CSS\n([\s\S]*?)(?=### JavaScript|$)/);
+    if (cssMatch) {
+      css = cssMatch[1].trim();
+    }
+
+    // Extract JavaScript
+    const jsMatch = response.match(/### JavaScript\n([\s\S]*?)(?=$)/);
+    if (jsMatch) {
+      javascript = jsMatch[1].trim();
+    }
+
+    return {
+      html,
+      css,
+      javascript,
+    };
   });
-
-  // Parse the response
-  const response = result.choices[0].message.content;
-
-  // Initialize variables
-  let html = "";
-  let css = "";
-  let javascript = "";
-
-  // Extract HTML
-  const htmlMatch = response.match(/### HTML\n([\s\S]*?)(?=### CSS|$)/);
-  if (htmlMatch) {
-    html = htmlMatch[1].trim();
-  }
-
-  // Extract CSS
-  const cssMatch = response.match(/### CSS\n([\s\S]*?)(?=### JavaScript|$)/);
-  if (cssMatch) {
-    css = cssMatch[1].trim();
-  }
-
-  // Extract JavaScript
-  const jsMatch = response.match(/### JavaScript\n([\s\S]*?)(?=$)/);
-  if (jsMatch) {
-    javascript = jsMatch[1].trim();
-  }
-
-  return {
-    html,
-    css,
-    javascript,
-  };
 }
 
 function saveGeneratedCode(parsedContent) {
@@ -159,7 +159,6 @@ function saveGeneratedCode(parsedContent) {
     Fliplet.Helper.field("regenerateCode").set(false);
   });
 }
-
 
 let systemPrompt = `You are to only return the HTML, CSS, JS for the following user request. 
 
@@ -412,4 +411,3 @@ connection.insert({
 If you asked to build a feature that requires navigating the user to another screen use the navigate JS API to do this: 
 
 Fliplet.Navigate.screen('Menu') where it accepts the screen name as a parameter.`;
-
