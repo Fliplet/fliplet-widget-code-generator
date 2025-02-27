@@ -9,6 +9,8 @@ Fliplet.Widget.instance({
       Fliplet.Widget.initializeChildren(this.$el, this);
 
       const AI = this;
+      const appId = Fliplet.App.getId();
+      const pageId = Fliplet.Page.getId();
       const $aiContainer = $(document).find(".code-generator-content");
 
       AI.fields = _.assign(
