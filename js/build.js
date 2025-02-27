@@ -1,6 +1,6 @@
 // Register this widget instance
 Fliplet.Widget.instance({
-  name: "code-generator",
+  name: "code-generator-dev",
   displayName: "Code generator",
   render: {
     template: ['<div class="code-generator-content">', "</div>"].join(""),
