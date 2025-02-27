@@ -328,7 +328,7 @@ Fliplet.Navigate.screen('Menu') where it accepts the screen name as a parameter.
         };
       }
 
-      function saveGeneratedCode(parsedContent) {
+      async function saveGeneratedCode(parsedContent) {
         const layoutResponse = parsedContent.html;
         $(document).find('.code-generator-content').html(`
           <style>
@@ -339,13 +339,24 @@ Fliplet.Navigate.screen('Menu') where it accepts the screen name as a parameter.
           </div>
         `);
 
-        $(document).append('.code-generator-content').html(`
-          <script>
-            ${parsedContent.javascript}
-          </script>
-        `);
+        const settingsResponse = await Fliplet.API.request({
+          url: `v1/apps/${appId}/pages/${pageId}/settings`,
+          method: "POST",
+          data: {
+            customSCSS: parsedContent.css,
+            customJS: parsedContent.javascript,
+          },
+        });
 
-        return true;
+        return settingsResponse
+
+        // $(document).append('.code-generator-content').html(`
+        //   <script>
+        //     ${parsedContent.javascript}
+        //   </script>
+        // `);
+
+        // return true;
       }
 
       if (
