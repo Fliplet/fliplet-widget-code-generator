@@ -41,7 +41,7 @@ Fliplet.Widget.instance({
           });
 
           // Save HTML
-          $aiContainer.html(AI.fields.layout);
+          $aiContainer.html('AI.fields.layout');
 
           return { settingsResponse };
         } catch (error) {
