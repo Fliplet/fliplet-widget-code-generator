@@ -334,12 +334,15 @@ Fliplet.Navigate.screen('Menu') where it accepts the screen name as a parameter.
           <style>
             ${parsedContent.css}
           </style>
-          <script>
-            ${parsedContent.javascript}
-          </script>
           <div class="generated-code">
             ${layoutResponse}
           </div>
+        `);
+
+        $(document).append('.code-generator-content').html(`
+          <script>
+            ${parsedContent.javascript}
+          </script>
         `);
 
         return true;
