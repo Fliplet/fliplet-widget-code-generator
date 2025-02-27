@@ -25,7 +25,7 @@ Fliplet.Widget.generateInterface({
           ],
         };
       },
-      onEvent: function(eventName, data) {
+      onEvent: function (eventName, data) {
         // Listen for events fired from the provider
         if (eventName === "dataSourceSelect") {
           selectedDataSourceId = data.id;
@@ -53,10 +53,6 @@ Fliplet.Widget.generateInterface({
 });
 
 function generateCode() {
-  
-  var data = Fliplet.Widget.getData();
-  debugger
-  Fliplet.Widget.save(data).then(function() {
-    Fliplet.Studio.emit('reload-widget-instance', widgetId);
-  });
+  Fliplet.Helper.field("dataSourceId").set(selectedDataSourceId);
+  Fliplet.Studio.emit("reload-widget-instance", widgetId);
 }
