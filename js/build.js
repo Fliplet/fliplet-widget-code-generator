@@ -25,6 +25,28 @@ Fliplet.Widget.instance({
 
       debugger;
 
+      async function saveGeneratedCode(parsedContent) {
+        try {
+          // Save CSS and JavaScript
+          const settingsResponse = await Fliplet.API.request({
+            url: `v1/apps/${appId}/pages/${pageId}/settings`,
+            method: "POST",
+            data: {
+              customSCSS: parsedContent.css,
+              customJS: parsedContent.javascript,
+            },
+          });
+
+          // Save HTML
+          $aiContainer.html(AI.fields.layout);
+
+          return { settingsResponse };
+        } catch (error) {
+          console.error("Error saving code:", error);
+          throw error;
+        }
+      }
+
       if (!AI.fields.dataSourceId || !AI.fields.prompt) {
         Fliplet.UI.toast.error(
           "Please select a data source and enter a prompt"
@@ -32,8 +54,19 @@ Fliplet.Widget.instance({
         return;
       }
 
-      if (AI.fields.css && AI.fields.javascript && AI.fields.layout) {
-        $aiContainer.html(AI.fields.layout);
+      if (
+        AI.fields.css &&
+        AI.fields.javascript &&
+        AI.fields.layout &&
+        AI.fields.regenerateCode
+      ) {
+        var parsedContent = {
+          css: AI.fields.css,
+          javascript: AI.fields.javascript,
+          layout: AI.fields.layout,
+        };
+        
+        saveGeneratedCode(parsedContent);
       }
     },
     // },

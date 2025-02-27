@@ -156,7 +156,9 @@ function saveGeneratedCode(parsedContent) {
 
   Fliplet.Widget.save(data.fields).then(function () {
     Fliplet.Studio.emit("reload-widget-instance", widgetId);
-    Fliplet.Helper.field("regenerateCode").set(false);
+    setTimeout(function () {
+      Fliplet.Helper.field("regenerateCode").set(false);
+    }, 3000);
   });
 }
 
