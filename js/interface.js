@@ -58,9 +58,9 @@ function generateCode() {
   data.fields.dataSourceId = selectedDataSourceId;
   data.configuration.fields[0].value = selectedDataSourceId;
   // debugger
-  // Fliplet.Widget.save(data).then(function() {
-  // Fliplet.Helper.field("dataSourceId").set(selectedDataSourceId);
-  // Fliplet.Helper.field("prompt").set('test');
-  Fliplet.Studio.emit("reload-widget-instance", widgetId);
-  // });
+  Fliplet.Widget.save(data).then(function () {
+    // Fliplet.Helper.field("dataSourceId").set(selectedDataSourceId);
+    // Fliplet.Helper.field("prompt").set('test');
+    Fliplet.Studio.emit("reload-widget-instance", widgetId);
+  });
 }
