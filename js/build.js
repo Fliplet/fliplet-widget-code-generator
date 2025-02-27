@@ -48,9 +48,7 @@ Fliplet.Widget.instance({
       }
 
       if (!AI.fields.dataSourceId || !AI.fields.prompt) {
-        Fliplet.UI.toast.error(
-          "Please select a data source and enter a prompt"
-        );
+        Fliplet.UI.Toast("Please select a data source and enter a prompt");
         return;
       }
 
@@ -65,7 +63,7 @@ Fliplet.Widget.instance({
           javascript: AI.fields.javascript,
           layout: AI.fields.layout,
         };
-        
+
         saveGeneratedCode(parsedContent);
       }
     },
