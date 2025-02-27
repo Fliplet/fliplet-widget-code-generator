@@ -53,10 +53,10 @@ Fliplet.Widget.generateInterface({
 });
 
 function generateCode() {
-  Fliplet.Widget.complete();
-  // var data = Fliplet.Widget.getData();
-  // data.fields.dataSourceId = selectedDataSourceId;
-  // data.fields.prompt = Fliplet.Helper.field("prompt").get();
+  // Fliplet.Widget.complete();
+  var data = Fliplet.Widget.getData();
+  data.fields.dataSourceId = selectedDataSourceId;
+  data.configuration.fields[0].value = selectedDataSourceId;
   // debugger
   // Fliplet.Widget.save(data).then(function() {
   // Fliplet.Helper.field("dataSourceId").set(selectedDataSourceId);
