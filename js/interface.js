@@ -1,5 +1,6 @@
 var selectedDataSourceId = null;
 var widgetId = Fliplet.Widget.getDefaultId();
+
 Fliplet.Widget.generateInterface({
   fields: [
     {
@@ -52,5 +53,10 @@ Fliplet.Widget.generateInterface({
 });
 
 function generateCode() {
-  Fliplet.Studio.emit('reload-widget-instance', widgetId);
+  
+  var data = Fliplet.Widget.getData();
+  debugger
+  Fliplet.Widget.save(data).then(function() {
+    Fliplet.Studio.emit('reload-widget-instance', widgetId);
+  });
 }
