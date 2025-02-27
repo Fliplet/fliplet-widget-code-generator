@@ -71,10 +71,12 @@ Fliplet.Widget.generateInterface({
       rows: 12,
     },
     {
-      type: 'checkbox',
+      type: 'toggle',
       name: 'regenerateCode',
       label: 'Regenerate code',
-      default: false,
+      description: 'Regenerate code',
+      toggleLabel: 'Regenerate',
+      default: false
     }
   ],
 });
