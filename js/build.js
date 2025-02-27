@@ -12,7 +12,7 @@ Fliplet.Widget.instance({
       const appId = Fliplet.Env.get("appId");
       const pageId = Fliplet.Env.get("pageId");
       debugger
-      const $aiContainer = $(this.$el).find(".code-generator-container");
+      const $aiContainer = $(this.$el).find(".code-generator-content");
 
       AI.fields = _.assign(
         {
