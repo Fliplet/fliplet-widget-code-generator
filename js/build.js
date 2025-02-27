@@ -59,9 +59,9 @@ Ensure you chain all the promises correctly with return statements.
 
 If you get asked to use datasource js api for e.g. if you need to save data from a form to a datasource or need to read data dynamic data to show it on the screen you need to use the following api's: 
 
-### Connect to a data source by its ID using the 'connect' method.
+### Connect to a data source by its name using the 'connectByName' method.
 
-Fliplet.DataSources.connect(dataSourceId).then(function (connection) {
+Fliplet.DataSources.connectByName(dataSourceName).then(function (connection) {
   // check below for the list of instance methods for the connection object
 });
 
