@@ -53,13 +53,14 @@ Fliplet.Widget.generateInterface({
 });
 
 function generateCode() {
+  Fliplet.Widget.complete();
   // var data = Fliplet.Widget.getData();
   // data.fields.dataSourceId = selectedDataSourceId;
   // data.fields.prompt = Fliplet.Helper.field("prompt").get();
-
+  // debugger
   // Fliplet.Widget.save(data).then(function() {
-  Fliplet.Helper.field("dataSourceId").set(selectedDataSourceId);
-  Fliplet.Helper.field("prompt").set('test');
+  // Fliplet.Helper.field("dataSourceId").set(selectedDataSourceId);
+  // Fliplet.Helper.field("prompt").set('test');
   Fliplet.Studio.emit("reload-widget-instance", widgetId);
   // });
 }
