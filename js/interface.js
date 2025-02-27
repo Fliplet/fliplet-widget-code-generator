@@ -149,7 +149,7 @@ function saveGeneratedCode(parsedContent) {
 
   var data = Fliplet.Widget.getData();
   data.fields.dataSourceId = selectedDataSourceId;
-  data.fields.prompt = prompt;
+  data.fields.prompt = Fliplet.Helper.field("prompt").get();
   data.fields.layout = parsedContent.html;
   data.fields.css = parsedContent.css;
   data.fields.javascript = parsedContent.javascript;
