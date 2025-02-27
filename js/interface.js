@@ -53,11 +53,9 @@ Fliplet.Widget.generateInterface({
 });
 
 function generateCode() {
-  
   var data = Fliplet.Widget.getData();
-  debugger
-  // data.fields.dataSourceId = selectedDataSourceId;
-  // data.fields.prompt = Fliplet.Helper.field("prompt").get();
+  data.fields.dataSourceId = selectedDataSourceId;
+  data.fields.prompt = Fliplet.Helper.field("prompt").get();
 
   Fliplet.Widget.save(data).then(function() {
   Fliplet.Helper.field("dataSourceId").set(selectedDataSourceId);
