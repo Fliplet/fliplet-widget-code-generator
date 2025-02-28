@@ -179,11 +179,7 @@ function saveGeneratedCode(parsedContent) {
 }
 
 function toggleSpinner(show) {
-  if (show) {
-    $(this.$el).find(".spinner-holder").show();
-  } else {
-    $(this.$el).find(".spinner-holder").hide();
-  }
+  $(".interface .spinner-holder").toggle(show);
 }
 
 let systemPrompt = `You are to only return the HTML, CSS, JS for the following user request. 
