@@ -70,6 +70,17 @@ Fliplet.Widget.generateInterface({
       default: "",
       rows: 12,
     },
+
+    {
+      type: "html",
+      html: `<div class="spinner-holder">
+              <div class="spinner-overlay">Loading...</div>
+              <p>Loading...</p>
+            </div>`,
+      ready: function () {
+        toggleSpinner(false);
+      },
+    },
     {
       type: "toggle",
       name: "regenerateCode",
@@ -82,6 +93,7 @@ Fliplet.Widget.generateInterface({
 });
 
 function generateCode() {
+  toggleSpinner(true);
   var prompt = Fliplet.Helper.field("prompt").get();
   if (selectedDataSourceId && prompt) {
     return queryAI(prompt)
@@ -95,6 +107,7 @@ function generateCode() {
       });
   } else {
     Fliplet.Studio.emit("reload-widget-instance", widgetId);
+    toggleSpinner(false);
   }
 }
 
@@ -156,12 +169,21 @@ function saveGeneratedCode(parsedContent) {
   data.fields.regenerateCode = true;
 
   Fliplet.Widget.save(data.fields).then(function () {
+    toggleSpinner(false);
     Fliplet.Studio.emit("reload-widget-instance", widgetId);
     setTimeout(function () {
       data.fields.regenerateCode = false;
       Fliplet.Widget.save(data.fields);
     }, 5000);
   });
+}
+
+function toggleSpinner(show) {
+  if (show) {
+    $(this.$el).find(".spinner-holder").show();
+  } else {
+    $(this.$el).find(".spinner-holder").hide();
+  }
 }
 
 let systemPrompt = `You are to only return the HTML, CSS, JS for the following user request. 
