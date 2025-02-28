@@ -25,6 +25,8 @@ Fliplet.Widget.instance({
         AI.fields
       );
 
+      const widgetId = AI.fields.codeGeneratorDevId;
+
       if (!AI.fields.dataSourceId || !AI.fields.prompt) {
         Fliplet.UI.Toast("Please select a data source and enter a prompt");
         return;
@@ -45,7 +47,7 @@ Fliplet.Widget.instance({
           });
 
           // Save HTML
-          $aiContainer.html(AI.fields.layout.replace(/"/g, "'"));
+          $aiContainer.html(AI.fields.layout.replace(/"/g, "`"));
 
           return { settingsResponse };
         } catch (error) {
@@ -56,9 +58,9 @@ Fliplet.Widget.instance({
 
       if (AI.fields.css && AI.fields.javascript && AI.fields.layout) {
         var parsedContent = {
-          css: AI.fields.css,
-          javascript: `// start\n ${AI.fields.javascript} \n// end`,
-          layout: AI.fields.layout,
+          css: `/* start code generator ${widgetId} */\n ${AI.fields.css} \n/* end code generator ${widgetId} */`,
+          javascript: `// start code generator ${widgetId}\n ${AI.fields.javascript} \n// end code generator ${widgetId}`,
+          layout: `/* start code generator ${widgetId} */\n ${AI.fields.layout} \n/* end code generator ${widgetId} */`,
         };
 
         saveGeneratedCode(parsedContent);
