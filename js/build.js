@@ -35,24 +35,53 @@ Fliplet.Widget.instance({
       }
 
       async function saveGeneratedCode(parsedContent) {
+        // todo add old custom code from the page
         try {
+
+          const currentSettings = await Fliplet.API.request({
+            url: `v1/apps/${appId}/pages/${pageId}?richLayout`,
+            method: "GET",
+          });
+
+          debugger;
           // Save CSS and JavaScript
           const settingsResponse = await Fliplet.API.request({
             url: `v1/apps/${appId}/pages/${pageId}/settings`,
             method: "POST",
             data: {
-              customSCSS: parsedContent.css,
-              customJS: parsedContent.javascript,
+              customSCSS: updateCodeWithinDelimiters('css', parsedContent.css, currentSettings.page.customSCSS), // Inject CSS code
+              customJS: updateCodeWithinDelimiters('js', parsedContent.javascript, currentSettings.page.customJS), // Inject JavaScript code
             },
           });
 
           // Save HTML
-          $aiContainer.html(AI.fields.layout);
+          $aiContainer.html(updateCodeWithinDelimiters('layout', parsedContent.layout, '')); // Inject HTML code
 
           return { settingsResponse };
         } catch (error) {
           console.error("Error saving code:", error);
           throw error;
+        }
+      }
+
+      function updateCodeWithinDelimiters(type, newCode, oldCode = '') {
+        let start, end;
+        
+        if (type == 'js') {
+          start = `// start code generator ${widgetId}`;
+          end = `// end code generator ${widgetId}`;
+        } else {
+          start = `/* start code generator ${widgetId} */`;
+          end = `/* end code generator ${widgetId} */`;
+        }
+
+        // Check if delimiters exist in the old code
+        if (oldCode.includes(start) && oldCode.includes(end)) {
+          // Replace content between delimiters
+          return oldCode.replace(start + '[\s\S]*?' + end, start + '\n' + newCode + '\n' + end);
+        } else {
+          // Append new code with delimiters at the end
+          return oldCode + '\n\n' + start + '\n' + newCode + '\n' + end;
         }
       }
 
