@@ -37,7 +37,6 @@ Fliplet.Widget.instance({
       async function saveGeneratedCode(parsedContent) {
         // todo add old custom code from the page
         try {
-
           const currentSettings = await Fliplet.API.request({
             url: `v1/apps/${appId}/pages/${pageId}?richLayout`,
             method: "GET",
@@ -49,15 +48,22 @@ Fliplet.Widget.instance({
             url: `v1/apps/${appId}/pages/${pageId}/settings`,
             method: "POST",
             data: {
-              customSCSS: updateCodeWithinDelimiters('css', parsedContent.css, currentSettings.page.settings.customSCSS), // Inject CSS code
-              customJS: updateCodeWithinDelimiters('js', parsedContent.javascript, currentSettings.page.settings.customJS), // Inject JavaScript code
+              customSCSS: updateCodeWithinDelimiters(
+                "css",
+                parsedContent.css,
+                currentSettings.page.settings.customSCSS
+              ), // Inject CSS code
+              customJS: updateCodeWithinDelimiters(
+                "js",
+                parsedContent.javascript,
+                currentSettings.page.settings.customJS
+              ), // Inject JavaScript code
             },
           });
 
           // Save HTML
           // $aiContainer.html(updateCodeWithinDelimiters('layout', parsedContent.layout, '')); // Inject HTML code
-          $aiContainer.html(); // Inject HTML code
-          $aiContainer.append(parsedContent.layout); // Inject HTML code
+          $aiContainer.html(parsedContent.layout.replaceAll('"', "'")); // Inject HTML code
 
           return { settingsResponse };
         } catch (error) {
@@ -66,10 +72,10 @@ Fliplet.Widget.instance({
         }
       }
 
-      function updateCodeWithinDelimiters(type, newCode, oldCode = '') {
+      function updateCodeWithinDelimiters(type, newCode, oldCode = "") {
         let start, end;
-        
-        if (type == 'js') {
+
+        if (type == "js") {
           start = `// start code generator ${widgetId}`;
           end = `// end code generator ${widgetId}`;
         } else {
@@ -80,10 +86,13 @@ Fliplet.Widget.instance({
         // Check if delimiters exist in the old code
         if (oldCode.includes(start) && oldCode.includes(end)) {
           // Replace content between delimiters
-          return oldCode.replace(start + '[\s\S]*?' + end, start + '\n' + newCode + '\n' + end);
+          return oldCode.replace(
+            start + "[sS]*?" + end,
+            start + "\n" + newCode + "\n" + end
+          );
         } else {
           // Append new code with delimiters at the end
-          return oldCode + '\n\n' + start + '\n' + newCode + '\n' + end;
+          return oldCode + "\n\n" + start + "\n" + newCode + "\n" + end;
         }
       }
 
