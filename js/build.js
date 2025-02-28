@@ -3,7 +3,7 @@ Fliplet.Widget.instance({
   name: "code-generator-dev",
   displayName: "Code generator",
   render: {
-    template: ['<div class="code-generator-content">', "</div>"].join(""),
+    template: '<div class="code-generator-content"></div>',
     ready: function () {
       // Initialize children components when this widget is ready
       Fliplet.Widget.initializeChildren(this.$el, this);
