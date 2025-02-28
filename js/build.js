@@ -89,9 +89,9 @@ Fliplet.Widget.instance({
 
       if (AI.fields.css && AI.fields.javascript && AI.fields.layout) {
         var parsedContent = {
-          css: `/* start code generator ${widgetId} */\n ${AI.fields.css} \n/* end code generator ${widgetId} */`,
-          javascript: `// start code generator ${widgetId}\n ${AI.fields.javascript} \n// end code generator ${widgetId}`,
-          layout: `/* start code generator ${widgetId} */\n ${AI.fields.layout} \n/* end code generator ${widgetId} */`,
+          css: AI.fields.css,
+          javascript: AI.fields.javascript,
+          layout: AI.fields.layout,
         };
 
         saveGeneratedCode(parsedContent);
