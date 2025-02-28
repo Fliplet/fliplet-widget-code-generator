@@ -11,7 +11,6 @@ Fliplet.Widget.instance({
       const AI = this;
       const appId = Fliplet.Env.get("appId");
       const pageId = Fliplet.Env.get("pageId");
-      debugger
       const $aiContainer = $(this.$el).find(".code-generator-content");
 
       AI.fields = _.assign(
@@ -29,6 +28,7 @@ Fliplet.Widget.instance({
       debugger;
 
       async function saveGeneratedCode(parsedContent) {
+        debugger
         try {
           // Save CSS and JavaScript
           const settingsResponse = await Fliplet.API.request({

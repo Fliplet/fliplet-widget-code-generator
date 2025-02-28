@@ -160,7 +160,7 @@ function saveGeneratedCode(parsedContent) {
     setTimeout(function () {
       data.fields.regenerateCode = false;
       Fliplet.Widget.save(data.fields);
-    }, 3000);
+    }, 5000);
   });
 }
 
