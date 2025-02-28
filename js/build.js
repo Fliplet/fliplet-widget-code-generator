@@ -49,13 +49,15 @@ Fliplet.Widget.instance({
             url: `v1/apps/${appId}/pages/${pageId}/settings`,
             method: "POST",
             data: {
-              customSCSS: updateCodeWithinDelimiters('css', parsedContent.css, currentSettings.page.customSCSS), // Inject CSS code
-              customJS: updateCodeWithinDelimiters('js', parsedContent.javascript, currentSettings.page.customJS), // Inject JavaScript code
+              customSCSS: updateCodeWithinDelimiters('css', parsedContent.css, currentSettings.page.settings.customSCSS), // Inject CSS code
+              customJS: updateCodeWithinDelimiters('js', parsedContent.javascript, currentSettings.page.settings.customJS), // Inject JavaScript code
             },
           });
 
           // Save HTML
-          $aiContainer.html(updateCodeWithinDelimiters('layout', parsedContent.layout, '')); // Inject HTML code
+          // $aiContainer.html(updateCodeWithinDelimiters('layout', parsedContent.layout, '')); // Inject HTML code
+          $aiContainer.html(); // Inject HTML code
+          $aiContainer.append(parsedContent.layout); // Inject HTML code
 
           return { settingsResponse };
         } catch (error) {
