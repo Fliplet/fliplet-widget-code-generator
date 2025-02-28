@@ -25,10 +25,15 @@ Fliplet.Widget.instance({
         AI.fields
       );
 
-      debugger;
+      if (!AI.fields.dataSourceId || !AI.fields.prompt) {
+        Fliplet.UI.Toast("Please select a data source and enter a prompt");
+        return;
+      } else if (!AI.fields.regenerateCode) {
+        return;
+      }
 
       async function saveGeneratedCode(parsedContent) {
-        debugger
+        debugger;
         try {
           // Save CSS and JavaScript
           const settingsResponse = await Fliplet.API.request({
@@ -50,17 +55,7 @@ Fliplet.Widget.instance({
         }
       }
 
-      if (!AI.fields.dataSourceId || !AI.fields.prompt) {
-        Fliplet.UI.Toast("Please select a data source and enter a prompt");
-        return;
-      }
-
-      if (
-        AI.fields.css &&
-        AI.fields.javascript &&
-        AI.fields.layout &&
-        AI.fields.regenerateCode
-      ) {
+      if (AI.fields.css && AI.fields.javascript && AI.fields.layout) {
         var parsedContent = {
           css: AI.fields.css,
           javascript: AI.fields.javascript,
