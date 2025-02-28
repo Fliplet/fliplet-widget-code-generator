@@ -13,13 +13,8 @@
   },
   "html_tag": "div",
   "interface": {
-  "interface": {
     "dependencies": ["fliplet-core", "fliplet-studio-ui", "fliplet-datasources"],
     "assets": ["js/interface.js", "css/interface.css"]
-  },
-    "assets": [
-      "js/interface.js"
-    ]
   },
   "build": {
     "dependencies": [
@@ -31,7 +26,6 @@
     "assets": [
       "css/build.css",
       "js/build.js"
-    ],
-    "appAssets": []
+    ]
   }
 }

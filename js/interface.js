@@ -75,7 +75,6 @@ Fliplet.Widget.generateInterface({
       type: "html",
       html: `<div class="spinner-holder">
               <div class="spinner-overlay">Loading...</div>
-              <p>Loading...</p>
             </div>`,
       ready: function () {
         toggleSpinner(false);
