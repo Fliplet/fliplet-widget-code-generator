@@ -46,7 +46,7 @@ Fliplet.Widget.instance({
           });
 
           // Save HTML
-          $aiContainer.html(AI.fields.layout);
+          $aiContainer.html(AI.fields.layout.replace(/"/g, "'"));
 
           return { settingsResponse };
         } catch (error) {
