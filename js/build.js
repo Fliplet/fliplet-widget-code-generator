@@ -33,7 +33,6 @@ Fliplet.Widget.instance({
       }
 
       async function saveGeneratedCode(parsedContent) {
-        debugger;
         try {
           // Save CSS and JavaScript
           const settingsResponse = await Fliplet.API.request({
@@ -58,13 +57,12 @@ Fliplet.Widget.instance({
       if (AI.fields.css && AI.fields.javascript && AI.fields.layout) {
         var parsedContent = {
           css: AI.fields.css,
-          javascript: AI.fields.javascript,
+          javascript: `// start\n ${AI.fields.javascript} \n// end`,
           layout: AI.fields.layout,
         };
 
         saveGeneratedCode(parsedContent);
       }
     },
-    // },
   },
 });
