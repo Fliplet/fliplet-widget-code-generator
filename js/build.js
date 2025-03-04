@@ -71,11 +71,11 @@ Fliplet.Widget.instance({
           //   },
           // });
 
-          await Fliplet.API.request({
+          const layoutResponse = await Fliplet.API.request({
             url: `v1/widget-instances/${widgetId}`,
             method: 'PUT',
             data: {
-              html: parsedContent.layoutHTML
+              htmlLayout: parsedContent.layoutHTML
             }
           });
 
@@ -95,7 +95,7 @@ Fliplet.Widget.instance({
           //   aiLayoutResponse: AI.fields.layout,
           // });
 
-          return { settingsResponse };
+          return { settingsResponse, layoutResponse };
         } catch (error) {
           console.error("Error saving code:", error);
           throw error;
