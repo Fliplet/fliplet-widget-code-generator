@@ -63,13 +63,20 @@ Fliplet.Widget.instance({
             },
           });
 
-          const layoutResponse = await Fliplet.API.request({
-            url: `v1/apps/${appId}/pages/${pageId}/rich-layout`,
-            method: "PUT",
+          // const layoutResponse = await Fliplet.API.request({
+          //   url: `v1/apps/${appId}/pages/${pageId}/rich-layout`,
+          //   method: "PUT",
+          //   data: {
+          //     richLayout: insertCodeIntoString(currentSettings.page.richLayout, widgetId, parsedContent.layoutHTML)
+          //   },
+          // });
+
+          await Fliplet.API.request({
+            url: `v1/widget-instances/${widgetId}`,
+            method: 'PUT',
             data: {
-              // richLayout: insertCodeIntoString(currentSettings.page.richLayout, widgetId, parsedContent.layoutHTML)
               html: parsedContent.layoutHTML
-            },
+            }
           });
 
           // Save HTML
@@ -84,7 +91,7 @@ Fliplet.Widget.instance({
           //   aiLayoutResponse: AI.fields.layout,
           // });
 
-          return { settingsResponse, layoutResponse };
+          return { settingsResponse };
         } catch (error) {
           console.error("Error saving code:", error);
           throw error;
