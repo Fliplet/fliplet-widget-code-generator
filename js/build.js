@@ -11,6 +11,8 @@ Fliplet.Widget.instance({
       const AI = this;
       const appId = Fliplet.Env.get("appId");
       const pageId = Fliplet.Env.get("pageId");
+      const organizationId = Fliplet.Env.get("organizationId");
+      const userId = Fliplet.Env.get("user")?.id || "";
       const $aiContainer = $(this.$el).find(".code-generator-content");
 
       AI.fields = _.assign(
@@ -40,9 +42,10 @@ Fliplet.Widget.instance({
           const currentSettings = await Fliplet.API.request({
             url: `v1/apps/${appId}/pages/${pageId}?richLayout`,
             method: "GET",
+          }).catch((error) => {
+            return Fliplet.UI.Toast("Error getting current settings: " + error);
           });
 
-          debugger;
           // Save CSS and JavaScript
           const settingsResponse = await Fliplet.API.request({
             url: `v1/apps/${appId}/pages/${pageId}/settings`,
@@ -62,15 +65,35 @@ Fliplet.Widget.instance({
           });
 
           // Save HTML
-          // $aiContainer.html(updateCodeWithinDelimiters('layout', parsedContent.layout, '')); // Inject HTML code
-          // $aiContainer.html(parsedContent.layout.replaceAll('"', "'")); // Inject HTML code
+          // $aiContainer.html(parsedContent.layout); // Inject HTML code
           $aiContainer.html("<div class='vvv'>some html</div>"); // Inject HTML code
+
+          // const logAiCall = await logAiCall({
+          //   prompt: AI.fields.prompt,
+          //   aiCssResponse: AI.fields.css,
+          //   aiJsResponse: AI.fields.javascript,
+          //   aiLayoutResponse: AI.fields.layout,
+          // });
 
           return { settingsResponse };
         } catch (error) {
           console.error("Error saving code:", error);
           throw error;
         }
+      }
+
+      function logAiCall(aiCallData) {
+        return Fliplet.API.request({
+          url: `v1/apps/${appId}/logs`,
+          method: "POST",
+          data: {
+            type: "ai.code.generator",
+            data: aiCallData,
+            userId: userId,
+            appId: appId,
+            organizationId: organizationId,
+          },
+        });
       }
 
       function updateCodeWithinDelimiters(type, newCode, oldCode = "") {
