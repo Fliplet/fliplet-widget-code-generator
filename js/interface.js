@@ -65,7 +65,7 @@ Fliplet.Widget.generateInterface({
     },
     {
       type: "hidden",
-      name: "layoutt",
+      name: "layoutHTML",
       label: "Layout",
       default: "",
       rows: 12,
@@ -154,7 +154,7 @@ function queryAI(prompt) {
 }
 
 function saveGeneratedCode(parsedContent) {
-  Fliplet.Helper.field("layoutt").set(parsedContent.html);
+  Fliplet.Helper.field("layoutHTML").set(parsedContent.html);
   Fliplet.Helper.field("css").set(parsedContent.css);
   Fliplet.Helper.field("javascript").set(parsedContent.javascript);
   Fliplet.Helper.field("regenerateCode").set(true);
@@ -162,7 +162,7 @@ function saveGeneratedCode(parsedContent) {
   var data = Fliplet.Widget.getData();
   data.fields.dataSourceId = selectedDataSourceId;
   data.fields.prompt = Fliplet.Helper.field("prompt").get();
-  data.fields.layoutt = parsedContent.html;
+  data.fields.layoutHTML = parsedContent.html;
   data.fields.css = parsedContent.css;
   data.fields.javascript = parsedContent.javascript;
   data.fields.regenerateCode = true;

@@ -21,7 +21,7 @@ Fliplet.Widget.instance({
           prompt: "",
           css: "",
           javascript: "",
-          layoutt: "",
+          layoutHTML: "",
           regenerateCode: false,
         },
         AI.fields
@@ -72,7 +72,7 @@ Fliplet.Widget.instance({
           // });
 
           // Save HTML
-          $aiContainer.html(parsedContent.layoutt); // Inject HTML code
+          $aiContainer.html(parsedContent.layoutHTML); // Inject HTML code
           // $aiContainer.html("<div class='vvv'>some html</div>"); // Inject HTML code
           // $aiContainer.html("some html"); // Inject HTML code
 
@@ -128,14 +128,16 @@ Fliplet.Widget.instance({
         }
       }
 
-      if (AI.fields.css && AI.fields.javascript && AI.fields.layoutt) {
+      if (AI.fields.css && AI.fields.javascript && AI.fields.layoutHTML) {
         var parsedContent = {
           css: AI.fields.css,
           javascript: AI.fields.javascript,
-          layoutt: AI.fields.layoutt,
+          layoutHTML: AI.fields.layoutHTML,
         };
 
         saveGeneratedCode(parsedContent);
+      } else if (AI.fields.layoutHTML) {
+        $aiContainer.html(AI.fields.layoutHTML);
       }
     },
   },
