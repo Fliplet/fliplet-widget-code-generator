@@ -29,8 +29,8 @@ Fliplet.Widget.instance({
 
       const widgetId = AI.fields.codeGeneratorDevId;
 
-      if (!AI.fields.dataSourceId || !AI.fields.prompt) {
-        Fliplet.UI.Toast("Please select a data source and enter a prompt");
+      if (!AI.fields.prompt) {
+        Fliplet.UI.Toast("Please enter a prompt");
         return;
       } else if (!AI.fields.regenerateCode) {
         return;
@@ -93,7 +93,7 @@ Fliplet.Widget.instance({
       function insertCodeIntoString(originalString, cid, code) {
         return originalString.replace(
           new RegExp(`<fl-code-generator-dev cid="${cid}"></fl-code-generator-dev>`),
-          `<fl-code-generator-dev cid="${cid}"><fl-helper name="code-generator-dev" data-widget-name="code-generator-dev" data-helper-code-generator-dev-id="${cid}" data-code-generator-dev-id="${cid}" data-helper-id="${cid}" state="ready">${code}</fl-helper></fl-code-generator-dev>`
+          `<fl-code-generator-dev cid="${cid}">${code}</fl-code-generator-dev>`
         );
       }
       function logAiCall(aiCallData) {

@@ -94,7 +94,7 @@ Fliplet.Widget.generateInterface({
 function generateCode() {
   toggleSpinner(true);
   var prompt = Fliplet.Helper.field("prompt").get();
-  if (selectedDataSourceId && prompt) {
+  if (prompt) {
     return queryAI(prompt)
       .then(function (parsedContent) {
         // Save the generated code
