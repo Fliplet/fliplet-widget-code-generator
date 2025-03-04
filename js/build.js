@@ -72,7 +72,7 @@ Fliplet.Widget.instance({
           // });
 
           // Save HTML
-          // $aiContainer.html(parsedContent.layout); // Inject HTML code
+          $aiContainer.html(parsedContent.layout); // Inject HTML code
           // $aiContainer.html("<div class='vvv'>some html</div>"); // Inject HTML code
           // $aiContainer.html("some html"); // Inject HTML code
 
