@@ -13,7 +13,7 @@ Fliplet.Widget.instance({
       const pageId = Fliplet.Env.get("pageId");
       const organizationId = Fliplet.Env.get("organizationId");
       const userId = Fliplet.Env.get("user")?.id || "";
-      const $aiContainer = $(this.$el).find(".code-generator-content");
+      const $aiContainer = $(this.$el)//.find(".code-generator-content");
 
       AI.fields = _.assign(
         {
