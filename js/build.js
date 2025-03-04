@@ -37,7 +37,6 @@ Fliplet.Widget.instance({
       }
 
       async function saveGeneratedCode(parsedContent) {
-        // todo add old custom code from the page
         try {
           const currentSettings = await Fliplet.API.request({
             url: `v1/apps/${appId}/pages/${pageId}?richLayout`,
@@ -47,22 +46,23 @@ Fliplet.Widget.instance({
           });
 
           // Save CSS and JavaScript
-          const settingsResponse = await Fliplet.API.request({
-            url: `v1/apps/${appId}/pages/${pageId}/settings`,
-            method: "POST",
-            data: {
-              customSCSS: updateCodeWithinDelimiters(
-                "css",
-                parsedContent.css,
-                currentSettings.page.settings.customSCSS
-              ), // Inject CSS code
-              customJS: updateCodeWithinDelimiters(
-                "js",
-                parsedContent.javascript,
-                currentSettings.page.settings.customJS
-              ), // Inject JavaScript code
-            },
-          });
+          const settingsResponse = '';
+          // const settingsResponse = await Fliplet.API.request({
+          //   url: `v1/apps/${appId}/pages/${pageId}/settings`,
+          //   method: "POST",
+          //   data: {
+          //     customSCSS: updateCodeWithinDelimiters(
+          //       "css",
+          //       parsedContent.css,
+          //       currentSettings.page.settings.customSCSS
+          //     ), // Inject CSS code
+          //     customJS: updateCodeWithinDelimiters(
+          //       "js",
+          //       parsedContent.javascript,
+          //       currentSettings.page.settings.customJS
+          //     ), // Inject JavaScript code
+          //   },
+          // });
 
           // const layoutResponse = await Fliplet.API.request({
           //   url: `v1/apps/${appId}/pages/${pageId}/rich-layout`,
