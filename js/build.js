@@ -13,7 +13,7 @@ Fliplet.Widget.instance({
       const pageId = Fliplet.Env.get("pageId");
       const organizationId = Fliplet.Env.get("organizationId");
       const userId = Fliplet.Env.get("user")?.id || "";
-      const $aiContainer = $(this.$el)//.find(".code-generator-content");
+      const $aiContainer = $(this.$el).find(".code-generator-content");
 
       AI.fields = _.assign(
         {
@@ -66,7 +66,7 @@ Fliplet.Widget.instance({
 
           // Save HTML
           // $aiContainer.html(parsedContent.layout); // Inject HTML code
-          $aiContainer.html("<div class='vvv'>some html</div>"); // Inject HTML code
+          $aiContainer.html(encodeURIComponent("<div class='vvv'>some html</div>" + parsedContent.layout)); // Inject HTML code
 
           // const logAiCall = await logAiCall({
           //   prompt: AI.fields.prompt,
