@@ -46,23 +46,22 @@ Fliplet.Widget.instance({
           });
 
           // Save CSS and JavaScript
-          const settingsResponse = '';
-          // const settingsResponse = await Fliplet.API.request({
-          //   url: `v1/apps/${appId}/pages/${pageId}/settings`,
-          //   method: "POST",
-          //   data: {
-          //     customSCSS: updateCodeWithinDelimiters(
-          //       "css",
-          //       parsedContent.css,
-          //       currentSettings.page.settings.customSCSS
-          //     ), // Inject CSS code
-          //     customJS: updateCodeWithinDelimiters(
-          //       "js",
-          //       parsedContent.javascript,
-          //       currentSettings.page.settings.customJS
-          //     ), // Inject JavaScript code
-          //   },
-          // });
+          const settingsResponse = await Fliplet.API.request({
+            url: `v1/apps/${appId}/pages/${pageId}/settings`,
+            method: "POST",
+            data: {
+              customSCSS: updateCodeWithinDelimiters(
+                "css",
+                parsedContent.css,
+                currentSettings.page.settings.customSCSS
+              ), // Inject CSS code
+              customJS: updateCodeWithinDelimiters(
+                "js",
+                parsedContent.javascript,
+                currentSettings.page.settings.customJS
+              ), // Inject JavaScript code
+            },
+          });
 
           // const layoutResponse = await Fliplet.API.request({
           //   url: `v1/apps/${appId}/pages/${pageId}/rich-layout`,
@@ -75,7 +74,7 @@ Fliplet.Widget.instance({
           // Save HTML
           // $aiContainer.html(parsedContent.layout); // Inject HTML code
           // $aiContainer.html("<div class='vvv'>some html</div>"); // Inject HTML code
-          $aiContainer.html("some html"); // Inject HTML code
+          // $aiContainer.html("some html"); // Inject HTML code
 
           // const logAiCall = await logAiCall({
           //   prompt: AI.fields.prompt,
