@@ -63,16 +63,17 @@ Fliplet.Widget.instance({
             },
           });
 
-          // const layoutResponse = await Fliplet.API.request({
-          //   url: `v1/apps/${appId}/pages/${pageId}/rich-layout`,
-          //   method: "PUT",
-          //   data: {
-          //     richLayout: currentSettings.page.settings.richLayout // parsedContent.layout,
-          //   },
-          // });
+          const layoutResponse = await Fliplet.API.request({
+            url: `v1/apps/${appId}/pages/${pageId}/rich-layout`,
+            method: "PUT",
+            data: {
+              richLayout: insertCodeIntoString(currentSettings.page.richLayout, widgetId, parsedContent.layoutHTML)
+            },
+          });
 
           // Save HTML
-          $aiContainer.html(parsedContent.layoutHTML); // Inject HTML code
+        
+          // $aiContainer.html(parsedContent.layoutHTML); // Inject HTML code
           // $aiContainer.html("<div class='vvv'>some html</div>"); // Inject HTML code
           // $aiContainer.html("some html"); // Inject HTML code
 
@@ -90,6 +91,12 @@ Fliplet.Widget.instance({
         }
       }
 
+      function insertCodeIntoString(originalString, cid, code) {
+        return originalString.replace(
+          new RegExp(`<fl-code-generator-dev cid="${cid}"></fl-code-generator-dev>`),
+          `<fl-code-generator-dev cid="${cid}">${code}</fl-code-generator-dev>`
+        );
+      }
       function logAiCall(aiCallData) {
         return Fliplet.API.request({
           url: `v1/apps/${appId}/logs`,
@@ -136,8 +143,6 @@ Fliplet.Widget.instance({
         };
 
         saveGeneratedCode(parsedContent);
-      } else if (AI.fields.layoutHTML) {
-        $aiContainer.html(AI.fields.layoutHTML);
       }
     },
   },
