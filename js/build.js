@@ -79,6 +79,10 @@ Fliplet.Widget.instance({
             }
           });
 
+          Fliplet.Studio.emit('page-preview-send-event', {
+            type: 'savePage'
+          });
+
           // Save HTML
           $aiContainer.html(parsedContent.layoutHTML); // Inject HTML code
           // $aiContainer.html("<div class='vvv'>some html</div>"); // Inject HTML code
