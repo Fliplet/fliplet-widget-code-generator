@@ -8,7 +8,6 @@ Fliplet.Widget.instance({
       // Initialize children components when this widget is ready
       Fliplet.Widget.initializeChildren(this.$el, this);
 
-      const $el = $(this);
       const AI = this;
       const appId = Fliplet.Env.get("appId");
       const pageId = Fliplet.Env.get("pageId");
@@ -30,7 +29,7 @@ Fliplet.Widget.instance({
 
       const widgetId = AI.fields.codeGeneratorDevId;
 
-      if (!AI.fields.prompt) {
+      if (!AI.fields.dataSourceId || !AI.fields.prompt) {
         Fliplet.UI.Toast("Please enter a prompt");
         return;
       } else if (!AI.fields.regenerateCode) {
@@ -64,34 +63,14 @@ Fliplet.Widget.instance({
             },
           });
 
-          // const layoutResponse = await Fliplet.API.request({
-          //   url: `v1/apps/${appId}/pages/${pageId}/rich-layout`,
-          //   method: "PUT",
-          //   data: {
-          //     richLayout: insertCodeIntoString(currentSettings.page.richLayout, widgetId, parsedContent.layoutHTML)
-          //   },
-          // });
-          var data = {
-            html: parsedContent.layoutHTML
-          }
-
-          if (!Fliplet.Env.get('development')) {
-            await Fliplet.API.request({
-              url: `v1/widget-instances/${widgetId}`,
-              method: 'PUT',
-              data
-            });
-          }
-     
-          Fliplet.Studio.emit('page-preview-send-event', {
-            type: 'savePage'
-          });
-    
-          Object.assign(AI, data);
-    
-          Fliplet.Hooks.run('componentEvent', {
-            type: 'render',
-            target: new Fliplet.Interact.ComponentNode($el)
+          debugger
+          const layoutResponse = await Fliplet.API.request({
+            url: `v1/apps/${appId}/pages/${pageId}/rich-layout`,
+            method: "PUT",
+            data: {
+              // richLayout: insertCodeIntoString(currentSettings.page.richLayout, widgetId, parsedContent.layoutHTML)
+              richLayout: parsedContent.layoutHTML
+            },
           });
 
           // Save HTML in interface
@@ -106,7 +85,7 @@ Fliplet.Widget.instance({
           //   aiLayoutResponse: AI.fields.layout,
           // });
 
-          return { settingsResponse };
+          return { settingsResponse, layoutResponse };
         } catch (error) {
           console.error("Error saving code:", error);
           throw error;
