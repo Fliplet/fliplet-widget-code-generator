@@ -71,14 +71,15 @@ Fliplet.Widget.instance({
           //     richLayout: insertCodeIntoString(currentSettings.page.richLayout, widgetId, parsedContent.layoutHTML)
           //   },
           // });
+          var data = {
+            html: parsedContent.layoutHTML
+          }
 
           if (!Fliplet.Env.get('development')) {
             await Fliplet.API.request({
               url: `v1/widget-instances/${widgetId}`,
               method: 'PUT',
-              data: {
-                html: parsedContent.layoutHTML
-              }
+              data
             });
           }
      
