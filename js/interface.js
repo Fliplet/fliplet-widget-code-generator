@@ -167,7 +167,7 @@ function saveGeneratedCode(parsedContent) {
   data.fields.javascript = parsedContent.javascript;
   data.fields.regenerateCode = true;
 
-  Fliplet.Widget.save(data.fields).then(function () {
+  returnFliplet.Widget.save(data.fields).then(function () {
     toggleSpinner(false);
     Fliplet.Studio.emit("reload-widget-instance", widgetId);
     setTimeout(function () {
