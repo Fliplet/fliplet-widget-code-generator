@@ -64,13 +64,13 @@ Fliplet.Widget.instance({
             },
           });
 
-          const layoutResponse = await Fliplet.API.request({
-            url: `v1/apps/${appId}/pages/${pageId}/rich-layout`,
-            method: "PUT",
-            data: {
-              richLayout: insertCodeIntoString(currentSettings.page.richLayout, widgetId, parsedContent.layoutHTML)
-            },
-          });
+          // const layoutResponse = await Fliplet.API.request({
+          //   url: `v1/apps/${appId}/pages/${pageId}/rich-layout`,
+          //   method: "PUT",
+          //   data: {
+          //     richLayout: insertCodeIntoString(currentSettings.page.richLayout, widgetId, parsedContent.layoutHTML)
+          //   },
+          // });
 
           // Save HTML
           $aiContainer.html(parsedContent.layoutHTML); // Inject HTML code
