@@ -29,7 +29,7 @@ Fliplet.Widget.instance({
 
       const widgetId = AI.fields.codeGeneratorDevId;
 
-      if (!AI.fields.dataSourceId || !AI.fields.prompt) {
+      if (!AI.fields.prompt) {
         Fliplet.UI.Toast("Please enter a prompt");
         return;
       } else if (!AI.fields.regenerateCode) {
@@ -68,8 +68,7 @@ Fliplet.Widget.instance({
             url: `v1/apps/${appId}/pages/${pageId}/rich-layout`,
             method: "PUT",
             data: {
-              // richLayout: insertCodeIntoString(currentSettings.page.richLayout, widgetId, parsedContent.layoutHTML)
-              richLayout: parsedContent.layoutHTML
+              richLayout: insertCodeIntoString(currentSettings.page.richLayout, widgetId, parsedContent.layoutHTML)
             },
           });
 
