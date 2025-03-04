@@ -21,7 +21,7 @@ Fliplet.Widget.instance({
           prompt: "",
           css: "",
           javascript: "",
-          layout: "",
+          layoutt: "",
           regenerateCode: false,
         },
         AI.fields
@@ -128,11 +128,11 @@ Fliplet.Widget.instance({
         }
       }
 
-      if (AI.fields.css && AI.fields.javascript && AI.fields.layout) {
+      if (AI.fields.css && AI.fields.javascript && AI.fields.layoutt) {
         var parsedContent = {
           css: AI.fields.css,
           javascript: AI.fields.javascript,
-          layout: AI.fields.layout,
+          layoutt: AI.fields.layoutt,
         };
 
         saveGeneratedCode(parsedContent);
