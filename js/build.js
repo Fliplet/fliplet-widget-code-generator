@@ -63,30 +63,15 @@ Fliplet.Widget.instance({
             },
           });
 
-          // const layoutResponse = await Fliplet.API.request({
-          //   url: `v1/apps/${appId}/pages/${pageId}/rich-layout`,
-          //   method: "PUT",
-          //   data: {
-          //     richLayout: insertCodeIntoString(currentSettings.page.richLayout, widgetId, parsedContent.layoutHTML)
-          //   },
-          // });
-
-          await Fliplet.API.request({
-            url: `v1/widget-instances/${widgetId}`,
-            method: 'PUT',
+          const layoutResponse = await Fliplet.API.request({
+            url: `v1/apps/${appId}/pages/${pageId}/rich-layout`,
+            method: "PUT",
             data: {
-              html: parsedContent.layoutHTML
-            }
+              richLayout: insertCodeIntoString(currentSettings.page.richLayout, widgetId, parsedContent.layoutHTML)
+            },
           });
 
-          AI.html = parsedContent.layoutHTML;
-
-          Fliplet.Hooks.run('componentEvent', {
-            type: 'render',
-            target: new Fliplet.Interact.ComponentNode(AI)
-          });
-
-          // Save HTML
+          // Save HTML in interface
           $aiContainer.html(parsedContent.layoutHTML); // Inject HTML code
           // $aiContainer.html("<div class='vvv'>some html</div>"); // Inject HTML code
           // $aiContainer.html("some html"); // Inject HTML code
@@ -98,7 +83,7 @@ Fliplet.Widget.instance({
           //   aiLayoutResponse: AI.fields.layout,
           // });
 
-          return { settingsResponse };
+          return { settingsResponse, layoutResponse };
         } catch (error) {
           console.error("Error saving code:", error);
           throw error;
@@ -108,7 +93,7 @@ Fliplet.Widget.instance({
       function insertCodeIntoString(originalString, cid, code) {
         return originalString.replace(
           new RegExp(`<fl-code-generator-dev cid="${cid}"></fl-code-generator-dev>`),
-          `<fl-code-generator-dev cid="${cid}">${code}</fl-code-generator-dev>`
+          `<fl-code-generator-dev cid="${cid}"><fl-helper name="code-generator-dev" data-widget-name="code-generator-dev" data-helper-code-generator-dev-id="${cid}" data-code-generator-dev-id="${cid}" data-helper-id="${cid}" state="ready">${code}</fl-helper></fl-code-generator-dev>`
         );
       }
       function logAiCall(aiCallData) {
