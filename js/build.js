@@ -32,10 +32,9 @@ Fliplet.Widget.instance({
       if (!AI.fields.dataSourceId || !AI.fields.prompt) {
         Fliplet.UI.Toast("Please select a data source and enter a prompt");
         return;
+      } else if (!AI.fields.regenerateCode) {
+        return;
       }
-      //  else if (!AI.fields.regenerateCode) {
-      //   return;
-      // }
 
       async function saveGeneratedCode(parsedContent) {
         try {
