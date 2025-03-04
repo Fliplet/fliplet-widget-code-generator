@@ -83,7 +83,7 @@ Fliplet.Widget.instance({
           //   aiLayoutResponse: AI.fields.layout,
           // });
 
-          return { settingsResponse };
+          return { settingsResponse, layoutResponse };
         } catch (error) {
           console.error("Error saving code:", error);
           throw error;
