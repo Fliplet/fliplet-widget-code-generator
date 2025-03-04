@@ -21,7 +21,7 @@ Fliplet.Widget.instance({
           prompt: "",
           css: "",
           javascript: "",
-          layout: "",
+          layoutt: "",
           regenerateCode: false,
         },
         AI.fields
@@ -67,7 +67,7 @@ Fliplet.Widget.instance({
           //   url: `v1/apps/${appId}/pages/${pageId}/rich-layout`,
           //   method: "PUT",
           //   data: {
-          //     richLayout: parsedContent.layout,
+          //     richLayout: currentSettings.page.settings.richLayout // parsedContent.layout,
           //   },
           // });
 
@@ -132,7 +132,7 @@ Fliplet.Widget.instance({
         var parsedContent = {
           css: AI.fields.css,
           javascript: AI.fields.javascript,
-          layout: AI.fields.layout,
+          layout: AI.fields.layoutt,
         };
 
         saveGeneratedCode(parsedContent);
