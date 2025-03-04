@@ -67,7 +67,8 @@ Fliplet.Widget.instance({
             url: `v1/apps/${appId}/pages/${pageId}/rich-layout`,
             method: "PUT",
             data: {
-              richLayout: insertCodeIntoString(currentSettings.page.richLayout, widgetId, parsedContent.layoutHTML)
+              // richLayout: insertCodeIntoString(currentSettings.page.richLayout, widgetId, parsedContent.layoutHTML)
+              html: parsedContent.layoutHTML
             },
           });
 
