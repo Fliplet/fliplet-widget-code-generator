@@ -71,16 +71,19 @@ Fliplet.Widget.instance({
           //   },
           // });
 
-          const layoutResponse = await Fliplet.API.request({
-            url: `v1/widget-instances/${widgetId}`,
+          await Fliplet.API.request({
+            url: `v1/widget-instances/${widgetData.id}`,
             method: 'PUT',
             data: {
-              htmlLayout: parsedContent.layoutHTML
+              html: parsedContent.layoutHTML
             }
           });
 
-          Fliplet.Studio.emit('page-preview-send-event', {
-            type: 'savePage'
+          AI.html = parsedContent.layoutHTML;
+
+          Fliplet.Hooks.run('componentEvent', {
+            type: 'render',
+            target: new Fliplet.Interact.ComponentNode(AI)
           });
 
           // Save HTML
@@ -95,7 +98,7 @@ Fliplet.Widget.instance({
           //   aiLayoutResponse: AI.fields.layout,
           // });
 
-          return { settingsResponse, layoutResponse };
+          return { settingsResponse };
         } catch (error) {
           console.error("Error saving code:", error);
           throw error;
