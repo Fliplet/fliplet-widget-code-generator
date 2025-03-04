@@ -21,7 +21,7 @@ Fliplet.Widget.instance({
           prompt: "",
           css: "",
           javascript: "",
-          layoutt: "",
+          layout: "",
           regenerateCode: false,
         },
         AI.fields
@@ -72,9 +72,9 @@ Fliplet.Widget.instance({
           // });
 
           // Save HTML
-          $aiContainer.html(parsedContent.layout); // Inject HTML code
+          // $aiContainer.html(parsedContent.layout); // Inject HTML code
           // $aiContainer.html("<div class='vvv'>some html</div>"); // Inject HTML code
-          // $aiContainer.html("some html"); // Inject HTML code
+          $aiContainer.html("some html"); // Inject HTML code
 
           // const logAiCall = await logAiCall({
           //   prompt: AI.fields.prompt,
@@ -132,7 +132,7 @@ Fliplet.Widget.instance({
         var parsedContent = {
           css: AI.fields.css,
           javascript: AI.fields.javascript,
-          layout: AI.fields.layoutt,
+          layout: AI.fields.layout,
         };
 
         saveGeneratedCode(parsedContent);
