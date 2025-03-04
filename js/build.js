@@ -64,17 +64,17 @@ Fliplet.Widget.instance({
             },
           });
 
-          const layoutResponse = await Fliplet.API.request({
-            url: `v1/apps/${appId}/pages/${pageId}/rich-layout`,
-            method: "PUT",
-            data: {
-              richLayout: parsedContent.layout,
-            },
-          });
+          // const layoutResponse = await Fliplet.API.request({
+          //   url: `v1/apps/${appId}/pages/${pageId}/rich-layout`,
+          //   method: "PUT",
+          //   data: {
+          //     richLayout: parsedContent.layout,
+          //   },
+          // });
 
           // Save HTML
           // $aiContainer.html(parsedContent.layout); // Inject HTML code
-          // $aiContainer.html("<div class='vvv'>some html</div>"); // Inject HTML code
+          $aiContainer.html("<div class='vvv'>some html</div>"); // Inject HTML code
 
           // const logAiCall = await logAiCall({
           //   prompt: AI.fields.prompt,
