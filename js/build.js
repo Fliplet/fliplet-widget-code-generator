@@ -66,7 +66,7 @@ Fliplet.Widget.instance({
 
           // Save HTML
           // $aiContainer.html(parsedContent.layout); // Inject HTML code
-          $aiContainer.html(encodeURIComponent("<div class='vvv'>some html</div>" + parsedContent.layout)); // Inject HTML code
+          $aiContainer.html("<div class='vvv'>some html</div>"); // Inject HTML code
 
           // const logAiCall = await logAiCall({
           //   prompt: AI.fields.prompt,
