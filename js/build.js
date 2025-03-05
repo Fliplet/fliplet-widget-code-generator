@@ -72,33 +72,36 @@ Fliplet.Widget.instance({
           //   },
           // });
 
+          // start form text component
           const data = {
-            html: parsedContent.layoutHTML
+            html: parsedContent.layoutHTML,
           };
-          
-            await Fliplet.API.request({
-              url: `v1/widget-instances/${widgetId}`,
-              method: 'PUT',
-              data
-            });
-     
-          Fliplet.Studio.emit('page-preview-send-event', {
-            type: 'savePage'
+
+          await Fliplet.API.request({
+            url: `v1/widget-instances/${widgetId}`,
+            method: "PUT",
+            data,
           });
-    
+
+          Fliplet.Studio.emit("page-preview-send-event", {
+            type: "savePage",
+          });
+
           Object.assign(AI.data, data);
           Object.assign(AI, data);
-    
-          Fliplet.Hooks.run('componentEvent', {
-            type: 'render',
-            target: new Fliplet.Interact.ComponentNode($el)
+
+          Fliplet.Hooks.run("componentEvent", {
+            type: "render",
+            target: new Fliplet.Interact.ComponentNode($el),
           });
+          // end of form text component
 
           // Save HTML in interface
           $aiContainer.html(parsedContent.layoutHTML); // Inject HTML code
           // $aiContainer.html("<div class='vvv'>some html</div>"); // Inject HTML code
           // $aiContainer.html("some html"); // Inject HTML code
 
+          // TODO uncomment logs
           // const logAiCall = await logAiCall({
           //   prompt: AI.fields.prompt,
           //   aiCssResponse: AI.fields.css,
@@ -106,7 +109,7 @@ Fliplet.Widget.instance({
           //   aiLayoutResponse: AI.fields.layout,
           // });
 
-          return { settingsResponse } // , layoutResponse };
+          return { settingsResponse }; // , layoutResponse };
         } catch (error) {
           console.error("Error saving code:", error);
           throw error;
@@ -115,11 +118,14 @@ Fliplet.Widget.instance({
 
       function insertCodeIntoString(originalString, cid, code) {
         return originalString.replace(
-          new RegExp(`<fl-code-generator-dev cid="${cid}"></fl-code-generator-dev>`),
+          new RegExp(
+            `<fl-code-generator-dev cid="${cid}"></fl-code-generator-dev>`
+          ),
           `<fl-code-generator-dev cid="${cid}">${code}</fl-code-generator-dev>`
         );
       }
-      function logAiCall(aiCallData) {
+
+      function logAiCall(data) {
         return Fliplet.API.request({
           url: `v1/apps/${appId}/logs`,
           method: "POST",
@@ -157,14 +163,16 @@ Fliplet.Widget.instance({
         }
       }
 
-      if (AI.fields.css && AI.fields.javascript && AI.fields.layoutHTML) {
-        var parsedContent = {
-          css: AI.fields.css,
-          javascript: AI.fields.javascript,
-          layoutHTML: AI.fields.layoutHTML,
-        };
+      var parsedContent = {
+        css: AI.fields.css,
+        javascript: AI.fields.javascript,
+        layoutHTML: AI.fields.layoutHTML,
+      };
 
+      if (AI.fields.css && AI.fields.javascript && AI.fields.layoutHTML) {
         saveGeneratedCode(parsedContent);
+      } else {
+        $aiContainer.html(parsedContent.layoutHTML); // Inject HTML code
       }
     },
   },
