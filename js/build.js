@@ -148,7 +148,7 @@ Fliplet.Widget.instance({
         if (oldCode.includes(start) && oldCode.includes(end)) {
           // Replace content between delimiters
           return oldCode.replace(
-            start + "[sS]*?" + end,
+            new RegExp(start + "[\\s\\S]*?" + end, "g"),
             start + "\n" + newCode + "\n" + end
           );
         } else {
