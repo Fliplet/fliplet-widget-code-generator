@@ -73,15 +73,11 @@ Fliplet.Widget.instance({
           // });
 
           const data = {
-            html: editor?.getContent?.() || widgetData.html
+            html: parsedContent.layoutHTML
           };
-    
-    
-          
-          data.html = parsedContent.layoutHTML;
           
             await Fliplet.API.request({
-              url: `v1/widget-instances/${widgetData.id}`,
+              url: `v1/widget-instances/${widgetId}}`,
               method: 'PUT',
               data
             });
@@ -91,6 +87,7 @@ Fliplet.Widget.instance({
           });
     
           Object.assign(AI.data, data);
+          Object.assign(AI, data);
     
           Fliplet.Hooks.run('componentEvent', {
             type: 'render',
