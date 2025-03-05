@@ -39,12 +39,12 @@ Fliplet.Widget.instance({
 
       async function saveGeneratedCode(parsedContent) {
         try {
-          // const currentSettings = await Fliplet.API.request({
-          //   url: `v1/apps/${appId}/pages/${pageId}?richLayout`,
-          //   method: "GET",
-          // }).catch((error) => {
-          //   return Fliplet.UI.Toast("Error getting current settings: " + error);
-          // });
+          const currentSettings = await Fliplet.API.request({
+            url: `v1/apps/${appId}/pages/${pageId}?richLayout`,
+            method: "GET",
+          }).catch((error) => {
+            return Fliplet.UI.Toast("Error getting current settings: " + error);
+          });
 
           // // Save CSS and JavaScript
           // const settingsResponse = await Fliplet.API.request({
@@ -109,7 +109,8 @@ Fliplet.Widget.instance({
           //   aiLayoutResponse: AI.fields.layout,
           // });
 
-          return { settingsResponse, layoutResponse };
+          return { layoutResponse };
+          // return { settingsResponse, layoutResponse };
         } catch (error) {
           console.error("Error saving code:", error);
           throw error;
