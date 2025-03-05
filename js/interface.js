@@ -39,7 +39,7 @@ Fliplet.Widget.generateInterface({
       name: "prompt",
       type: "textarea",
       label: "Prompt",
-      default: "",
+      default: "Create a form that collects survey data about an AI event from users. Make sure to capture Email, Name, rating and any other fields you think are approriate. Save the data to the datasource called 'survey data'",
       rows: 12,
     },
     {
