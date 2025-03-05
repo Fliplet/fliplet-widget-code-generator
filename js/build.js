@@ -39,61 +39,61 @@ Fliplet.Widget.instance({
 
       async function saveGeneratedCode(parsedContent) {
         try {
-          const currentSettings = await Fliplet.API.request({
-            url: `v1/apps/${appId}/pages/${pageId}?richLayout`,
-            method: "GET",
-          }).catch((error) => {
-            return Fliplet.UI.Toast("Error getting current settings: " + error);
-          });
+          // const currentSettings = await Fliplet.API.request({
+          //   url: `v1/apps/${appId}/pages/${pageId}?richLayout`,
+          //   method: "GET",
+          // }).catch((error) => {
+          //   return Fliplet.UI.Toast("Error getting current settings: " + error);
+          // });
 
-          // Save CSS and JavaScript
-          const settingsResponse = await Fliplet.API.request({
-            url: `v1/apps/${appId}/pages/${pageId}/settings`,
-            method: "POST",
-            data: {
-              customSCSS: updateCodeWithinDelimiters(
-                "css",
-                parsedContent.css,
-                currentSettings.page.settings.customSCSS
-              ), // Inject CSS code
-              customJS: updateCodeWithinDelimiters(
-                "js",
-                parsedContent.javascript,
-                currentSettings.page.settings.customJS
-              ), // Inject JavaScript code
-            },
-          });
-
-          // const layoutResponse = await Fliplet.API.request({
-          //   url: `v1/apps/${appId}/pages/${pageId}/rich-layout`,
-          //   method: "PUT",
+          // // Save CSS and JavaScript
+          // const settingsResponse = await Fliplet.API.request({
+          //   url: `v1/apps/${appId}/pages/${pageId}/settings`,
+          //   method: "POST",
           //   data: {
-          //     richLayout: insertCodeIntoString(currentSettings.page.richLayout, widgetId, parsedContent.layoutHTML)
+          //     customSCSS: updateCodeWithinDelimiters(
+          //       "css",
+          //       parsedContent.css,
+          //       currentSettings.page.settings.customSCSS
+          //     ), // Inject CSS code
+          //     customJS: updateCodeWithinDelimiters(
+          //       "js",
+          //       parsedContent.javascript,
+          //       currentSettings.page.settings.customJS
+          //     ), // Inject JavaScript code
           //   },
           // });
 
-          // start form text component
-          const data = {
-            html: parsedContent.layoutHTML,
-          };
-
-          await Fliplet.API.request({
-            url: `v1/widget-instances/${widgetId}`,
+          const layoutResponse = await Fliplet.API.request({
+            url: `v1/apps/${appId}/pages/${pageId}/rich-layout`,
             method: "PUT",
-            data,
+            data: {
+              richLayout: insertCodeIntoString(currentSettings.page.richLayout, widgetId, parsedContent.layoutHTML)
+            },
           });
 
-          Fliplet.Studio.emit("page-preview-send-event", {
-            type: "savePage",
-          });
+          // // start form text component
+          // const data = {
+          //   html: parsedContent.layoutHTML,
+          // };
 
-          Object.assign(AI.data, data);
-          Object.assign(AI, data);
+          // await Fliplet.API.request({
+          //   url: `v1/widget-instances/${widgetId}`,
+          //   method: "PUT",
+          //   data,
+          // });
 
-          Fliplet.Hooks.run("componentEvent", {
-            type: "render",
-            target: new Fliplet.Interact.ComponentNode($el),
-          });
+          // Fliplet.Studio.emit("page-preview-send-event", {
+          //   type: "savePage",
+          // });
+
+          // Object.assign(AI.data, data);
+          // Object.assign(AI, data);
+
+          // Fliplet.Hooks.run("componentEvent", {
+          //   type: "render",
+          //   target: new Fliplet.Interact.ComponentNode($el),
+          // });
           // end of form text component
 
           // Save HTML in interface
@@ -109,7 +109,7 @@ Fliplet.Widget.instance({
           //   aiLayoutResponse: AI.fields.layout,
           // });
 
-          return { settingsResponse }; // , layoutResponse };
+          return { settingsResponse, layoutResponse };
         } catch (error) {
           console.error("Error saving code:", error);
           throw error;
