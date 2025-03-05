@@ -8,6 +8,7 @@ Fliplet.Widget.instance({
       // Initialize children components when this widget is ready
       Fliplet.Widget.initializeChildren(this.$el, this);
 
+      const $el = $(this);
       const AI = this;
       const appId = Fliplet.Env.get("appId");
       const pageId = Fliplet.Env.get("pageId");
@@ -63,13 +64,37 @@ Fliplet.Widget.instance({
             },
           });
 
-          debugger
-          const layoutResponse = await Fliplet.API.request({
-            url: `v1/apps/${appId}/pages/${pageId}/rich-layout`,
-            method: "PUT",
-            data: {
-              richLayout: insertCodeIntoString(currentSettings.page.richLayout, widgetId, parsedContent.layoutHTML)
-            },
+          // const layoutResponse = await Fliplet.API.request({
+          //   url: `v1/apps/${appId}/pages/${pageId}/rich-layout`,
+          //   method: "PUT",
+          //   data: {
+          //     richLayout: insertCodeIntoString(currentSettings.page.richLayout, widgetId, parsedContent.layoutHTML)
+          //   },
+          // });
+
+          const data = {
+            html: editor?.getContent?.() || widgetData.html
+          };
+    
+    
+          
+          data.html = parsedContent.layoutHTML;
+          
+            await Fliplet.API.request({
+              url: `v1/widget-instances/${widgetData.id}`,
+              method: 'PUT',
+              data
+            });
+     
+          Fliplet.Studio.emit('page-preview-send-event', {
+            type: 'savePage'
+          });
+    
+          Object.assign(AI.data, data);
+    
+          Fliplet.Hooks.run('componentEvent', {
+            type: 'render',
+            target: new Fliplet.Interact.ComponentNode($el)
           });
 
           // Save HTML in interface
