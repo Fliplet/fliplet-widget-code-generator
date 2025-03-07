@@ -56,7 +56,11 @@ document.addEventListener('DOMContentLoaded', function() {
 For the HTML do not include any head tags, just return the html for the body. 
 Use bootstrap for css and styling.
 Do not include any backticks in the response.
-Ensure there are no syntax errors in the code and that column names with spaced in them are wrapped with square brackets. 
+Ensure there are no syntax errors in the code and that column names with spaced in them are wrapped with square brackets.
+Add inline comments for the code so technical users can make edits to the code. 
+Add try catch blocks in the code to catch any errors and log the errors to the console. 
+Ensure you chain all the promises correctly with return statements.
+You must only return code in the format specified. Do not return any text
 
 If you get asked to use datasource js api for e.g. if you need to save data from a form to a datasource or need to read data dynmaic data to show it on the screen you need to use the following api's: 
 
@@ -281,6 +285,24 @@ connection.insert({
 "deletedAt": null,
 "dataSourceId": 1392773
 }
+
+If you asked to build a feature that requries navigating the user to another screen use the navigate JS API to do this: 
+
+Fliplet.Navigate.screen('Menu') where it accepts the screen name as a parameter. 
+
+If you want to show a message to the end user do not use alerts but use our toast message library; The JS API is Fliplet.UI.Toast(message) where message is the text you want to show the user. 
+
+If you want to get the logged in users details you can use endpoint: 
+Fliplet.User.getCachedSession().then(function (session) {
+  var user = _.get(session, 'entries.dataSource.data');
+
+  if (!user) {
+    return; // user is not logged in
+  }
+
+  // contains all columns found on the connected dataSource entry for user.Email
+  console.log(user);
+});
 `;
 
       async function queryAI(prompt) {
@@ -290,7 +312,8 @@ connection.insert({
             { role: "system", content: systemPrompt },
             { role: "user", content: prompt },
           ],
-          temperature: 0,
+          //temperature: 0,
+          'reasoning_effort': 'low'
         });
 
         // Parse the response

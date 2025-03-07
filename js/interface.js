@@ -4,7 +4,7 @@ Fliplet.Widget.generateInterface({
       name: 'aiModel',
       type: 'text',
       label: 'AI model',
-      default: 'gpt-4o'
+      default: 'o3-mini'
     },
     {
       name: 'prompt',
