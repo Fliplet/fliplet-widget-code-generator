@@ -49,7 +49,8 @@ Fliplet.Widget.generateInterface({
       label: "Prompt",
       default: "",
       rows: 12,
-      description: "You can ask AI to reference your data sources names, screens names and column names belonging to the logged in user's data.",
+      description:
+        "You can ask AI to reference your data sources names, screens names and column names belonging to the logged in user's data.",
     },
     {
       type: "html",
@@ -62,6 +63,18 @@ Fliplet.Widget.generateInterface({
       html: '<input type="button" class="btn btn-primary generate-code" value="Generate code" />',
       ready: function () {
         $(this.$el).find(".generate-code").on("click", generateCode);
+      },
+    },
+    {
+      type: "html",
+      html: `<button disabled class="btn btn-primary generate-code-disabled">
+                <div class="spinner-holder">
+                  <div class="spinner-overlay"></div>
+                </div>
+                <div>Generating...</div>
+            </button>`,
+      ready: function () {
+        toggleLoader(false);
       },
     },
     {
@@ -83,16 +96,6 @@ Fliplet.Widget.generateInterface({
       label: "Layout",
       default: "",
     },
-
-    {
-      type: "html",
-      html: `<div class="spinner-holder">
-              <div class="spinner-overlay">Loading...</div>
-            </div>`,
-      ready: function () {
-        toggleSpinner(false);
-      },
-    },
     {
       type: "hidden",
       name: "regenerateCode",
@@ -104,7 +107,18 @@ Fliplet.Widget.generateInterface({
   ],
 });
 
+function toggleLoader(isDisabled) {
+  if (isDisabled) {
+    $(this.$el).find(".generate-code-disabled").show();
+    $(this.$el).find(".generate-code").hide();
+  } else {
+    $(this.$el).find(".generate-code-disabled").hide();
+    $(this.$el).find(".generate-code").show();
+  }
+}
+
 function generateCode() {
+  toggleLoader(true);
   var prompt = Fliplet.Helper.field("prompt").get();
   if (prompt) {
     return queryAI(prompt)
@@ -113,7 +127,7 @@ function generateCode() {
         return saveGeneratedCode(parsedContent);
       })
       .catch(function (error) {
-        console.error("Error in process:", error);
+        toggleLoader(false);
         return Promise.reject(error);
       });
   } else {
@@ -128,7 +142,7 @@ function queryAI(prompt) {
       { role: "system", content: systemPrompt },
       { role: "user", content: prompt },
     ],
-    'reasoning_effort': 'low'
+    reasoning_effort: "low",
   }).then(function (result) {
     // Parse the response
     const response = result.choices[0].message.content;
@@ -180,6 +194,7 @@ function saveGeneratedCode(parsedContent) {
 
   return Fliplet.Widget.save(data.fields).then(function () {
     Fliplet.Studio.emit("reload-widget-instance", widgetId);
+    toggleLoader(false);
     setTimeout(function () {
       Fliplet.Helper.field("regenerateCode").set(false);
       data.fields.regenerateCode = false;

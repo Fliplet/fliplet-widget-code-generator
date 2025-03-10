@@ -1,0 +1,11 @@
+.interface .generate-code-disabled .spinner-holder {
+  display: block;
+  margin-right: 10px;
+}
+
+.interface .generate-code-disabled {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
