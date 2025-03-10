@@ -15,10 +15,6 @@ Fliplet.Widget.instance({
       const userId = Fliplet.Env.get("user")?.id || "";
       const $aiContainer = $(this.$el).find(".ai-feature-content");
 
-      if (Fliplet.Env.get("mode") == "interact") {
-        $(`.ai-feature-${widgetId}`).hide(); // Inject HTML code
-      }
-
       AI.fields = _.assign(
         {
           dataSourceId: "",
@@ -32,6 +28,10 @@ Fliplet.Widget.instance({
       );
 
       const widgetId = AI.fields.aiFeatureId;
+      
+      if (Fliplet.Env.get("mode") == "interact") {
+        $(`.ai-feature-${widgetId}`).hide(); // Inject HTML code
+      }
 
       if (!AI.fields.prompt) {
         Fliplet.UI.Toast("Please enter a prompt");
