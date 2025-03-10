@@ -91,9 +91,9 @@ Fliplet.Widget.instance({
             aiLayoutResponse: AI.fields.layoutHTML,
           });
 
-          // if (Fliplet.Env.get("mode") == "interact") {
-          //   $aiContainer.html(AI.fields.layoutHTML); // Inject HTML code
-          // }
+          if (Fliplet.Env.get("mode") == "interact") {
+            $(`.ai-feature-${widgetId}`).hide(); // Inject HTML code
+          }
 
           return { layoutResponse };
           // return { settingsResponse, layoutResponse };
