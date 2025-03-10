@@ -28,10 +28,6 @@ Fliplet.Widget.instance({
       );
 
       const widgetId = AI.fields.aiFeatureId;
-      
-      if (Fliplet.Env.get("mode") == "interact") {
-        $(`.ai-feature-${widgetId}`).hide(); // Inject HTML code
-      }
 
       if (!AI.fields.prompt) {
         Fliplet.UI.Toast("Please enter a prompt");
