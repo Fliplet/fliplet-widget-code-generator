@@ -181,7 +181,8 @@ function toggleSpinner(show) {
   $(".interface .spinner-holder").toggle(show);
 }
 
-let systemPrompt = `You are to only return the HTML, CSS, JS for the following user request. 
+let systemPrompt = `
+You are to only return the HTML, CSS, JS for the following user request. 
 
 The format of the response should be as follows: 
 
@@ -206,12 +207,15 @@ Ensure there are no syntax errors in the code and that column names with spaced 
 Add inline comments for the code so technical users can make edits to the code. 
 Add try catch blocks in the code to catch any errors and log the errors to the console. 
 Ensure you chain all the promises correctly with return statements.
+You must only return code in the format specified. Do not return any text
 
-If you get asked to use datasource js api for e.g. if you need to save data from a form to a datasource or need to read data dynamic data to show it on the screen you need to use the following api's: 
+If you get asked to use datasource js api for e.g. if you need to save data from a form to a datasource or need to read data dynmaic data to show it on the screen you need to use the following api's: 
 
-### Connect to a data source by its name using the 'connectByName' method.
+### Connect to a data source by Name
 
-Fliplet.DataSources.connectByName(dataSourceName).then(function (connection) {
+You can also connect to a datas ource by its name (case-sensitive) using the 'connectByName' method.
+
+Fliplet.DataSources.connectByName("Attendees").then(function (connection) {
   // check below for the list of instance methods for the connection object
 });
 
@@ -429,6 +433,21 @@ connection.insert({
 "dataSourceId": 1392773
 }
 
-If you asked to build a feature that requires navigating the user to another screen use the navigate JS API to do this: 
+If you asked to build a feature that requries navigating the user to another screen use the navigate JS API to do this: 
 
-Fliplet.Navigate.screen('Menu') where it accepts the screen name as a parameter.`;
+Fliplet.Navigate.screen('Menu') where it accepts the screen name as a parameter. 
+
+If you want to show a message to the end user do not use alerts but use our toast message library; The JS API is Fliplet.UI.Toast(message) where message is the text you want to show the user. 
+
+If you want to get the logged in users details you can use endpoint: 
+Fliplet.User.getCachedSession().then(function (session) {
+  var user = _.get(session, 'entries.dataSource.data');
+
+  if (!user) {
+    return; // user is not logged in
+  }
+
+  // contains all columns found on the connected dataSource entry for user.Email
+  console.log(user);
+});
+`;
