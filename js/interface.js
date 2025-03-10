@@ -128,7 +128,7 @@ function queryAI(prompt) {
       { role: "system", content: systemPrompt },
       { role: "user", content: prompt },
     ],
-    temperature: 0,
+    'reasoning_effort': 'low'
   }).then(function (result) {
     // Parse the response
     const response = result.choices[0].message.content;
