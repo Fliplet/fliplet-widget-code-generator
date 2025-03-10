@@ -1,9 +1,0 @@
-.interface .spinner-holder {
-  position: fixed;
-  inset: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-}
-
-.interface .spinner-overlay {
-  margin-top: 100px;
-}

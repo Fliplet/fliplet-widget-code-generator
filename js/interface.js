@@ -8,7 +8,8 @@ Fliplet.Widget.generateInterface({
       html: `Use this component to generate features within a screen using AI. The code created will be available in the developer tools.
             <br>
             <br>
-            Select a data source if you want your feature to use a data source.`,
+            Select a data source if you want your feature to use a data source.
+            <br><br>`,
     },
     {
       type: "provider",
@@ -52,7 +53,9 @@ Fliplet.Widget.generateInterface({
     },
     {
       type: "html",
-      html: `Clicking generate will ask AI to create the feature based on your prompt.`,
+      html: `<br><br>
+            Clicking generate will ask AI to create the feature based on your prompt.
+            <br>`,
     },
     {
       type: "html",
@@ -102,7 +105,6 @@ Fliplet.Widget.generateInterface({
 });
 
 function generateCode() {
-  toggleSpinner(true);
   var prompt = Fliplet.Helper.field("prompt").get();
   if (prompt) {
     return queryAI(prompt)
@@ -116,7 +118,6 @@ function generateCode() {
       });
   } else {
     Fliplet.Studio.emit("reload-widget-instance", widgetId);
-    toggleSpinner(false);
   }
 }
 
@@ -178,17 +179,13 @@ function saveGeneratedCode(parsedContent) {
   data.fields.regenerateCode = true;
 
   return Fliplet.Widget.save(data.fields).then(function () {
-    toggleSpinner(false);
     Fliplet.Studio.emit("reload-widget-instance", widgetId);
     setTimeout(function () {
+      Fliplet.Helper.field("regenerateCode").set(false);
       data.fields.regenerateCode = false;
       Fliplet.Widget.save(data.fields);
     }, 5000);
   });
-}
-
-function toggleSpinner(show) {
-  $(".interface .spinner-holder").toggle(show);
 }
 
 let systemPrompt = `
@@ -219,11 +216,11 @@ Add try catch blocks in the code to catch any errors and log the errors to the c
 Ensure you chain all the promises correctly with return statements.
 You must only return code in the format specified. Do not return any text
 
-If you get asked to use datasource js api for e.g. if you need to save data from a form to a datasource or need to read data dynmaic data to show it on the screen you need to use the following api's: 
+If you get asked to use datasource js api for e.g. if you need to save data from a form to a datasource or need to read data dynamic data to show it on the screen you need to use the following api's: 
 
 ### Connect to a data source by Name
 
-You can also connect to a datas ource by its name (case-sensitive) using the 'connectByName' method.
+You can also connect to a data source by its name (case-sensitive) using the 'connectByName' method.
 
 Fliplet.DataSources.connectByName("Attendees").then(function (connection) {
   // check below for the list of instance methods for the connection object
@@ -443,7 +440,7 @@ connection.insert({
 "dataSourceId": 1392773
 }
 
-If you asked to build a feature that requries navigating the user to another screen use the navigate JS API to do this: 
+If you asked to build a feature that requires navigating the user to another screen use the navigate JS API to do this: 
 
 Fliplet.Navigate.screen('Menu') where it accepts the screen name as a parameter. 
 
