@@ -92,7 +92,7 @@ Fliplet.Widget.instance({
           });
 
           if (Fliplet.Env.get("mode") == "interact") {
-            $aiContainer.html(parsedContent.layoutHTML); // Inject HTML code
+            $aiContainer.html(AI.fields.layoutHTML); // Inject HTML code
           }
 
           return { layoutResponse };
@@ -150,7 +150,7 @@ Fliplet.Widget.instance({
       if (AI.fields.css && AI.fields.javascript && AI.fields.layoutHTML) {
         saveGeneratedCode(parsedContent);
       } else {
-        $aiContainer.html(parsedContent.layoutHTML); // Inject HTML code
+        $aiContainer.html(AI.fields.layoutHTML); // Inject HTML code
       }
     },
   },
