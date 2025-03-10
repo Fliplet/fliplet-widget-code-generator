@@ -149,8 +149,6 @@ Fliplet.Widget.instance({
 
       if (AI.fields.css && AI.fields.javascript && AI.fields.layoutHTML) {
         saveGeneratedCode(parsedContent);
-      } else {
-        $aiContainer.html(AI.fields.layoutHTML); // Inject HTML code
       }
     },
   },
