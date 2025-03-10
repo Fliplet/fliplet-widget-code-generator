@@ -49,7 +49,7 @@ Fliplet.Widget.generateInterface({
       label: "Prompt",
       default: "",
       rows: 12,
-      description: "You can ask AI to reference your data sources, screens...",
+      description: "You can ask AI to reference your data sources names, screens names and column names belonging to the logged in user's data.",
     },
     {
       type: "html",
