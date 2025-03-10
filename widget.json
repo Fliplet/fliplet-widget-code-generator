@@ -1,6 +1,6 @@
 {
-  "name": "Code generator DEV",
-  "package": "com.fliplet.code-generator-dev",
+  "name": "AI feature",
+  "package": "com.fliplet.ai-feature",
   "version": "1.0.0",
   "icon": "img/icon.png",
   "tags": ["type:component", "category:text", "beta:true"],

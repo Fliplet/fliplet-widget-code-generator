@@ -4,6 +4,13 @@ var widgetId = Fliplet.Widget.getDefaultId();
 Fliplet.Widget.generateInterface({
   fields: [
     {
+      type: "html",
+      html: `Use this component to generate features within a screen using AI. The code created will be available in the developer tools.
+            <br>
+            <br>
+            Select a data source if you want your feature to use a data source.`,
+    },
+    {
       type: "provider",
       name: "dataSourceId",
       package: "com.fliplet.data-source-provider",
@@ -39,8 +46,13 @@ Fliplet.Widget.generateInterface({
       name: "prompt",
       type: "textarea",
       label: "Prompt",
-      default: "Create a form that collects survey data about an AI event from users. Make sure to capture Email, Name, rating and any other fields you think are approriate. Save the data to the datasource called 'survey data'",
+      default: "",
       rows: 12,
+      description: "You can ask AI to reference your data sources, screens...",
+    },
+    {
+      type: "html",
+      html: `Clicking generate will ask AI to create the feature based on your prompt.`,
     },
     {
       type: "html",
@@ -61,14 +73,12 @@ Fliplet.Widget.generateInterface({
       name: "javascript",
       label: "JavaScript",
       default: "",
-      rows: 12,
     },
     {
       type: "hidden",
       name: "layoutHTML",
       label: "Layout",
       default: "",
-      rows: 12,
     },
 
     {
@@ -112,7 +122,7 @@ function generateCode() {
 
 function queryAI(prompt) {
   return Fliplet.AI.createCompletion({
-    model: "gpt-4o",
+    model: "o3-mini",
     messages: [
       { role: "system", content: systemPrompt },
       { role: "user", content: prompt },
