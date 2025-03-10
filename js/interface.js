@@ -63,6 +63,7 @@ Fliplet.Widget.generateInterface({
       html: '<input type="button" class="btn btn-primary generate-code" value="Generate code" />',
       ready: function () {
         $(this.$el).find(".generate-code").on("click", generateCode);
+        toggleLoader(false);
       },
     },
     {
@@ -109,11 +110,11 @@ Fliplet.Widget.generateInterface({
 
 function toggleLoader(isDisabled) {
   if (isDisabled) {
-    $(this.$el).find(".generate-code-disabled").show();
-    $(this.$el).find(".generate-code").hide();
+    $(".interface").find(".generate-code-disabled").show();
+    $(".interface").find(".generate-code").hide();
   } else {
-    $(this.$el).find(".generate-code-disabled").hide();
-    $(this.$el).find(".generate-code").show();
+    $(".interface").find(".generate-code-disabled").hide();
+    $(".interface").find(".generate-code").show();
   }
 }
 
