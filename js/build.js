@@ -15,6 +15,10 @@ Fliplet.Widget.instance({
       const userId = Fliplet.Env.get("user")?.id || "";
       const $aiContainer = $(this.$el).find(".ai-feature-content");
 
+      if (Fliplet.Env.get("mode") == "interact") {
+        $(`.ai-feature-${widgetId}`).hide(); // Inject HTML code
+      }
+
       AI.fields = _.assign(
         {
           dataSourceId: "",
@@ -90,10 +94,6 @@ Fliplet.Widget.instance({
             aiJsResponse: AI.fields.javascript,
             aiLayoutResponse: AI.fields.layoutHTML,
           });
-
-          if (Fliplet.Env.get("mode") == "interact") {
-            $(`.ai-feature-${widgetId}`).hide(); // Inject HTML code
-          }
 
           return { layoutResponse };
           // return { settingsResponse, layoutResponse };
