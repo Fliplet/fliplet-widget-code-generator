@@ -53,7 +53,7 @@ Fliplet.Widget.generateInterface({
     },
     {
       type: "html",
-      html: `<br><br>
+      html: `<br>
             Clicking generate will ask AI to create the feature based on your prompt.
             <br>`,
     },
