@@ -13,7 +13,6 @@ Fliplet.Widget.instance({
       const pageId = Fliplet.Env.get("pageId");
       const organizationId = Fliplet.Env.get("organizationId");
       const userId = Fliplet.Env.get("user")?.id || "";
-      const $aiContainer = $(this.$el).find(".ai-feature-content");
 
       AI.fields = _.assign(
         {
@@ -38,6 +37,7 @@ Fliplet.Widget.instance({
 
       async function saveGeneratedCode(parsedContent) {
         try {
+          // get current page settings
           const currentSettings = await Fliplet.API.request({
             url: `v1/apps/${appId}/pages/${pageId}?richLayout`,
             method: "GET",
@@ -63,23 +63,13 @@ Fliplet.Widget.instance({
             },
           });
 
-          // code from AI
-          var codeGenContainer = `<div class="ai-feature-${widgetId}">${parsedContent.layoutHTML}</div>`;
-
-          // Wrap response inside a temporary container
-          let $wrapper = $("<div>").html(currentSettings.page.richLayout);
-
-          // remove existing code gen container
-          $wrapper.find(`.ai-feature-${widgetId}`).remove();
-
-          // Find `<fl-ai-feature>` and add a sibling after it
-          $wrapper.find("fl-ai-feature").after(codeGenContainer);
+          const htmlCodeToInject = injectHtmlCode();
 
           const layoutResponse = await Fliplet.API.request({
             url: `v1/apps/${appId}/pages/${pageId}/rich-layout`,
             method: "PUT",
             data: {
-              richLayout: $wrapper.html(),
+              richLayout: htmlCodeToInject,
             },
           });
 
@@ -91,13 +81,25 @@ Fliplet.Widget.instance({
             aiLayoutResponse: AI.fields.layoutHTML,
           });
 
+          // reload page preview
           Fliplet.Studio.emit("reload-page-preview");
-          return { layoutResponse };
-          // return { settingsResponse, layoutResponse };
+
+          return { settingsResponse, layoutResponse, logAiCallResponse };
         } catch (error) {
-          console.error("Error saving code:", error);
           throw error;
         }
+      }
+
+      function injectHtmlCode() {
+        // code from AI
+        var codeGenContainer = `<div class="ai-feature-${widgetId}">${parsedContent.layoutHTML}</div>`;
+        // Wrap response inside a temporary container
+        let $wrapper = $("<div>").html(currentSettings.page.richLayout);
+        // remove existing ai feature container
+        $wrapper.find(`.ai-feature-${widgetId}`).remove();
+        // Find `<fl-ai-feature>` and add a sibling after it
+        $wrapper.find("fl-ai-feature").after(codeGenContainer);
+        return $wrapper.html();
       }
 
       function logAiCall(data) {
@@ -109,20 +111,7 @@ Fliplet.Widget.instance({
             appId: appId,
             organizationId: organizationId,
           },
-        }).then(function (log) {
-          // log<Object>
         });
-        // return Fliplet.API.request({
-        //   url: `v1/organizations/${organizationId}/logs`,
-        //   method: "POST",
-        //   data: JSON.stringify({
-        //     type: "ai.code.feature",
-        //     data: data,
-        //     userId: userId,
-        //     appId: appId,
-        //     organizationId: organizationId,
-        //   }),
-        // });
       }
 
       function updateCodeWithinDelimiters(type, newCode, oldCode = "") {
