@@ -26,6 +26,15 @@ Fliplet.Widget.instance({
         AI.fields
       );
 
+      window.addEventListener("message", (event) => {
+        console.log("Received message:", event.data);
+        debugger
+        if (event.data.type === 'deleteWidgetInstance') {
+          debugger
+          console.log('Deleting widget instance:', event.data.id);
+        }
+      });
+
       const widgetId = AI.fields.aiFeatureId;
 
       if (!AI.fields.prompt) {
