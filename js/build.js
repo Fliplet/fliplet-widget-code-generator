@@ -33,9 +33,6 @@ Fliplet.Widget.instance({
         Fliplet.UI.Toast("Please enter a prompt");
         return;
       } else if (!AI.fields.regenerateCode) {
-        if (AI.fields.layoutHTML) {
-          $aiContainer.html(AI.fields.layoutHTML); // Inject HTML code
-        }
         return;
       }
 
@@ -93,6 +90,8 @@ Fliplet.Widget.instance({
             aiJsResponse: AI.fields.javascript,
             aiLayoutResponse: AI.fields.layoutHTML,
           });
+
+          $aiContainer.html(AI.fields.layoutHTML); // Inject HTML code
 
           return { layoutResponse };
           // return { settingsResponse, layoutResponse };
