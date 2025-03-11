@@ -26,22 +26,24 @@ Fliplet.Widget.instance({
         AI.fields
       );
 
-      // event.type == 'removed'
-      // event.removed[0].widgetId
-
       const widgetId = AI.fields.aiFeatureId;
 
-      // Fliplet.Hooks.on("componentEvent", async function (event) {
-      //   if (
-      //     event?.type == "removed" &&
-      //     widgetId == event?.removed[0]?.widgetId
-      //   ) {
-      //     var currentSettings = await getCurrentPageSettings();
+      Fliplet.Hooks.on("componentEvent", async function (event) {
+        if (
+          event?.type == "removed" &&
+          widgetId == event?.removed[0]?.widgetId
+        ) {
+          var currentSettings = await getCurrentPageSettings();
 
-      //     // reload page preview
-      //     Fliplet.Studio.emit("reload-page-preview");
-      //   }
-      // });
+          var removedHtml = removeHtmlCode(currentSettings);
+
+          // var saved = saveCssAndJs();
+
+          // reload page preview
+          Fliplet.Studio.emit("reload-page-preview");
+          return { removedHtml };
+        }
+      });
 
       if (!AI.fields.prompt) {
         Fliplet.UI.Toast("Please enter a prompt");
@@ -129,6 +131,13 @@ Fliplet.Widget.instance({
         $wrapper.find(`.ai-feature-${widgetId}`).remove();
         // Find `<fl-ai-feature>` and add a sibling after it
         $wrapper.find("fl-ai-feature").after(codeGenContainer);
+        return $wrapper.html();
+      }
+
+      function removeHtmlCode(currentSettings) {
+        let $wrapper = $("<div>").html(currentSettings.page.richLayout);
+        // remove existing ai feature container
+        $wrapper.find(`.ai-feature-${widgetId}`).remove();
         return $wrapper.html();
       }
 
