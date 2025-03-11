@@ -26,7 +26,16 @@ Fliplet.Widget.instance({
         AI.fields
       );
 
+      // event.type == 'removed'
+      // event.removed[0].widgetId
+
       const widgetId = AI.fields.aiFeatureId;
+
+      Fliplet.Hooks.on('componentEvent', function(event) {
+        if (widgetId == event.removed[0].widgetId && event.type == 'removed') {
+          alert('Deleting widget instance: ' + event.removed[0].widgetId);
+        }
+      })
 
       if (!AI.fields.prompt) {
         Fliplet.UI.Toast("Please enter a prompt");
