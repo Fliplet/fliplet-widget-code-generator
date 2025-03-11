@@ -33,6 +33,9 @@ Fliplet.Widget.instance({
         Fliplet.UI.Toast("Please enter a prompt");
         return;
       } else if (!AI.fields.regenerateCode) {
+        if (AI.fields.layoutHTML) {
+          $aiContainer.html(AI.fields.layoutHTML); // Inject HTML code
+        }
         return;
       }
 
