@@ -91,10 +91,7 @@ Fliplet.Widget.instance({
             aiLayoutResponse: AI.fields.layoutHTML,
           });
 
-          // $aiContainer.html(AI.fields.layoutHTML); // Inject HTML code
-
-          
-          Fliplet.Studio.emit('reload-page-preview');
+          Fliplet.Studio.emit("reload-page-preview");
           return { layoutResponse };
           // return { settingsResponse, layoutResponse };
         } catch (error) {
@@ -104,9 +101,7 @@ Fliplet.Widget.instance({
       }
 
       function logAiCall(data) {
-        return Fliplet.API.request({
-          url: `v1/organizations/${organizationId}/logs`,
-          method: "POST",
+        return Fliplet.App.Logs.create({
           data: JSON.stringify({
             type: "ai.code.feature",
             data: data,
@@ -114,7 +109,20 @@ Fliplet.Widget.instance({
             appId: appId,
             organizationId: organizationId,
           }),
+        }).then(function (log) {
+          // log<Object>
         });
+        // return Fliplet.API.request({
+        //   url: `v1/organizations/${organizationId}/logs`,
+        //   method: "POST",
+        //   data: JSON.stringify({
+        //     type: "ai.code.feature",
+        //     data: data,
+        //     userId: userId,
+        //     appId: appId,
+        //     organizationId: organizationId,
+        //   }),
+        // });
       }
 
       function updateCodeWithinDelimiters(type, newCode, oldCode = "") {
