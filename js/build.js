@@ -63,7 +63,7 @@ Fliplet.Widget.instance({
             },
           });
 
-          const htmlCodeToInject = injectHtmlCode();
+          const htmlCodeToInject = injectHtmlCode(currentSettings);
 
           const layoutResponse = await Fliplet.API.request({
             url: `v1/apps/${appId}/pages/${pageId}/rich-layout`,
@@ -90,7 +90,7 @@ Fliplet.Widget.instance({
         }
       }
 
-      function injectHtmlCode() {
+      function injectHtmlCode(currentSettings) {
         // code from AI
         var codeGenContainer = `<div class="ai-feature-${widgetId}">${parsedContent.layoutHTML}</div>`;
         // Wrap response inside a temporary container
