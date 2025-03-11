@@ -91,7 +91,7 @@ Fliplet.Widget.instance({
             aiLayoutResponse: AI.fields.layoutHTML,
           });
 
-          $aiContainer.html($wrapper.html()); // Inject HTML code
+          // $aiContainer.html($wrapper.html()); // Inject HTML code
 
           return { layoutResponse };
           // return { settingsResponse, layoutResponse };
