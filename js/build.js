@@ -37,6 +37,8 @@ Fliplet.Widget.instance({
 
           var removedHtml = removeHtmlCode(currentSettings);
 
+          const layoutResponse = await saveLayout(removedHtml);
+
           // var saved = saveCssAndJs();
 
           // reload page preview
