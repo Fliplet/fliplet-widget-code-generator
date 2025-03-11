@@ -200,7 +200,7 @@ function saveGeneratedCode(parsedContent) {
       Fliplet.Helper.field("regenerateCode").set(false);
       data.fields.regenerateCode = false;
       Fliplet.Widget.save(data.fields);
-    }, 5000);
+    }, 1000);
   });
 }
 
