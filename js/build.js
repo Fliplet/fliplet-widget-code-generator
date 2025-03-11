@@ -31,11 +31,17 @@ Fliplet.Widget.instance({
 
       const widgetId = AI.fields.aiFeatureId;
 
-      Fliplet.Hooks.on('componentEvent', function(event) {
-        if (widgetId == event.removed[0].widgetId && event.type == 'removed') {
-          alert('Deleting widget instance: ' + event.removed[0].widgetId);
-        }
-      })
+      // Fliplet.Hooks.on("componentEvent", async function (event) {
+      //   if (
+      //     event?.type == "removed" &&
+      //     widgetId == event?.removed[0]?.widgetId
+      //   ) {
+      //     var currentSettings = await getCurrentPageSettings();
+
+      //     // reload page preview
+      //     Fliplet.Studio.emit("reload-page-preview");
+      //   }
+      // });
 
       if (!AI.fields.prompt) {
         Fliplet.UI.Toast("Please enter a prompt");
@@ -44,43 +50,58 @@ Fliplet.Widget.instance({
         return;
       }
 
+      async function getCurrentPageSettings() {
+        return await Fliplet.API.request({
+          url: `v1/apps/${appId}/pages/${pageId}?richLayout`,
+          method: "GET",
+        }).catch((error) => {
+          return Fliplet.UI.Toast("Error getting current settings: " + error);
+        });
+      }
+
+      async function saveCssAndJs(css, js) {
+        var response = await Fliplet.API.request({
+          url: `v1/apps/${appId}/pages/${pageId}/settings`,
+          method: "POST",
+          data: {
+            customSCSS: css, // Inject CSS code
+            customJS: js, // Inject JavaScript code
+          },
+        });
+
+        return response;
+      }
+
+      async function saveLayout(html) {
+        return await Fliplet.API.request({
+          url: `v1/apps/${appId}/pages/${pageId}/rich-layout`,
+          method: "PUT",
+          data: { richLayout: html },
+        });
+      }
+
       async function saveGeneratedCode(parsedContent) {
         try {
           // get current page settings
-          const currentSettings = await Fliplet.API.request({
-            url: `v1/apps/${appId}/pages/${pageId}?richLayout`,
-            method: "GET",
-          }).catch((error) => {
-            return Fliplet.UI.Toast("Error getting current settings: " + error);
-          });
+          const currentSettings = await getCurrentPageSettings();
 
           // Save CSS and JavaScript
-          const settingsResponse = await Fliplet.API.request({
-            url: `v1/apps/${appId}/pages/${pageId}/settings`,
-            method: "POST",
-            data: {
-              customSCSS: updateCodeWithinDelimiters(
-                "css",
-                parsedContent.css,
-                currentSettings.page.settings.customSCSS
-              ), // Inject CSS code
-              customJS: updateCodeWithinDelimiters(
-                "js",
-                parsedContent.javascript,
-                currentSettings.page.settings.customJS
-              ), // Inject JavaScript code
-            },
-          });
+          const settingsResponse = await saveCssAndJs(
+            updateCodeWithinDelimiters(
+              "css",
+              parsedContent.css,
+              currentSettings.page.settings.customSCSS
+            ), // Inject CSS code
+            updateCodeWithinDelimiters(
+              "js",
+              parsedContent.javascript,
+              currentSettings.page.settings.customJS
+            )
+          );
 
           const htmlCodeToInject = injectHtmlCode(currentSettings);
 
-          const layoutResponse = await Fliplet.API.request({
-            url: `v1/apps/${appId}/pages/${pageId}/rich-layout`,
-            method: "PUT",
-            data: {
-              richLayout: htmlCodeToInject,
-            },
-          });
+          const layoutResponse = await saveLayout(htmlCodeToInject);
 
           // save logs
           const logAiCallResponse = await logAiCall({
