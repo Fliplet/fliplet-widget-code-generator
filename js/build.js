@@ -102,13 +102,13 @@ Fliplet.Widget.instance({
 
       function logAiCall(data) {
         return Fliplet.App.Logs.create({
-          data: JSON.stringify({
+          data: {
             type: "ai.code.feature",
             data: data,
             userId: userId,
             appId: appId,
             organizationId: organizationId,
-          }),
+          },
         }).then(function (log) {
           // log<Object>
         });
