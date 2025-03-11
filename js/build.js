@@ -91,8 +91,10 @@ Fliplet.Widget.instance({
             aiLayoutResponse: AI.fields.layoutHTML,
           });
 
-          $aiContainer.html(AI.fields.layoutHTML); // Inject HTML code
+          // $aiContainer.html(AI.fields.layoutHTML); // Inject HTML code
 
+          
+          Fliplet.Studio.emit('reload-page-preview');
           return { layoutResponse };
           // return { settingsResponse, layoutResponse };
         } catch (error) {
