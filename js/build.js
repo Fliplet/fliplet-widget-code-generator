@@ -42,8 +42,8 @@ Fliplet.Widget.instance({
           // var saved = saveCssAndJs();
 
           // reload page preview
-          Fliplet.Studio.emit("reload-page-preview");
-          return { removedHtml };
+          // Fliplet.Studio.emit("reload-page-preview");
+          return { removedHtml, layoutResponse };
         }
       });
 
