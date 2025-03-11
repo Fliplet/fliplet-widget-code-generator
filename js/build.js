@@ -39,10 +39,12 @@ Fliplet.Widget.instance({
 
           const layoutResponse = await saveLayout(removedHtml);
 
-          // var saved = saveCssAndJs();
+          const removedCss = removeCodeWithinDelimiters("css", currentSettings.page.settings.customSCSS);
+          const removedJs = removeCodeWithinDelimiters("js", currentSettings.page.settings.customJS);
+          const saved = saveCssAndJs(removedCss, removedJs);
 
           // reload page preview
-          // Fliplet.Studio.emit("reload-page-preview");
+          Fliplet.Studio.emit("reload-page-preview");
           return { removedHtml, layoutResponse };
         }
       });
@@ -177,6 +179,20 @@ Fliplet.Widget.instance({
           // Append new code with delimiters at the end
           return oldCode + "\n\n" + start + "\n" + newCode + "\n" + end;
         }
+      }
+
+      function removeCodeWithinDelimiters(type, oldCode = "") {
+        let start, end;
+
+        if (type == "js") {
+          start = `// start-ai-feature ${widgetId}`;
+          end = `// end-ai-feature ${widgetId}`;
+        } else {
+          start = `/* start-ai-feature ${widgetId} */`;
+          end = `/* end-ai-feature ${widgetId} */`;
+        }
+
+        return oldCode.replace(new RegExp(start + "[\\s\\S]*?" + end, "g"), "");
       }
 
       var parsedContent = {
