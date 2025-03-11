@@ -188,11 +188,15 @@ Fliplet.Widget.instance({
           start = `// start-ai-feature ${widgetId}`;
           end = `// end-ai-feature ${widgetId}`;
         } else {
-          start = `/* start-ai-feature ${widgetId} */`;
-          end = `/* end-ai-feature ${widgetId} */`;
+          start = `\/\* start-ai-feature ${widgetId} \*\/`;
+          end = `\/\* end-ai-feature ${widgetId} \*\/`;
         }
 
-        return oldCode.replace(new RegExp(start + "[\\s\\S]*?" + end, "g"), "");
+        // Create the pattern with escaped special characters
+        const pattern = new RegExp(start + '[\\s\\S]*?' + end, 'g');
+        
+        // Remove the delimited code and any extra newlines that might be left
+        return oldCode.replace(pattern, '').replace(/\n{3,}/g, '\n\n').trim();
       }
 
       var parsedContent = {
