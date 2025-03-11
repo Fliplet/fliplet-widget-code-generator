@@ -188,15 +188,22 @@ Fliplet.Widget.instance({
           start = `// start-ai-feature ${widgetId}`;
           end = `// end-ai-feature ${widgetId}`;
         } else {
-          start = `\/\* start-ai-feature ${widgetId} \*\/`;
-          end = `\/\* end-ai-feature ${widgetId} \*\/`;
+          // For CSS, we need to escape the special characters properly
+          start = `/\\* start-ai-feature ${widgetId} \\*/`;
+          end = `/\\* end-ai-feature ${widgetId} \\*/`;
         }
 
-        // Create the pattern with escaped special characters
-        const pattern = new RegExp(start + '[\\s\\S]*?' + end, 'g');
+        // Create the pattern and escape the string properly
+        const pattern = new RegExp(
+          `${start}[\\s\\S]*?${end}`,
+          'g'
+        );
         
-        // Remove the delimited code and any extra newlines that might be left
-        return oldCode.replace(pattern, '').replace(/\n{3,}/g, '\n\n').trim();
+        // Remove the delimited code and clean up whitespace
+        return oldCode
+          .replace(pattern, '')
+          .replace(/\n{3,}/g, '\n\n')
+          .trim();
       }
 
       var parsedContent = {
