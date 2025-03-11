@@ -76,6 +76,25 @@ Fliplet.Widget.generateInterface({
             </button>`,
       ready: function () {
         toggleLoader(false);
+
+        // Remove existing message event listener if it exists
+        const existingHandler = window._aiFeatureMessageHandler;
+        if (existingHandler) {
+          window.removeEventListener("message", existingHandler);
+        }
+
+        // Create and store new message handler
+        window._aiFeatureMessageHandler = (event) => {
+          debugger;
+          console.log("Received message:", event.data);
+
+          if (event.data.type === "deleteWidgetInstance") {
+            console.log("Deleting widget instance:", event.data.id);
+          }
+        };
+
+        // Add new event listener
+        window.addEventListener("message", window._aiFeatureMessageHandler);
       },
     },
     {
