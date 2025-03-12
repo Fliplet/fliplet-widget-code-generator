@@ -1,6 +1,6 @@
 var selectedDataSourceId = null;
-var widgetId = Fliplet.Widget.getDefaultId();
 var selectedDataSourceName = null;
+var widgetId = Fliplet.Widget.getDefaultId();
 
 Fliplet.Widget.generateInterface({
   fields: [
@@ -236,20 +236,17 @@ Ensure you chain all the promises correctly with return statements.
 You must only return code in the format specified. Do not return any text
 
 
-If a data source is selected, first retrieve the values from 'Fliplet.Widget.getData().fields.dataSourceId' and 'Fliplet.Widget.getData().fields.dataSourceName'.
-Use these extracted values directly when constructing the JavaScript code, rather than including the retrieval logic in the output.
-
-If these values are not set, use the user-provided input:
+If a data source is selected, use this value: ${selectedDataSourceId || 'Not exist'}. If the value doesn't exist, use the user-provided input:
   - If a number is passed, use '.connect()'.
   - If a string is passed, use '.connectByName()'.
 
 #### Connect using Data Source ID
-Fliplet.DataSources.connect(retrievedDataSourceId || userProvidedInput).then(function (connection) {
+Fliplet.DataSources.connect(value || userProvidedInput).then(function (connection) {
   // check below for the list of instance methods for the connection object
 });
 
 #### Connect using Data Source Name
-Fliplet.DataSources.connectByName(retrievedDataSourceName || userProvidedInput).then(function (connection) {
+Fliplet.DataSources.connectByName(userProvidedInput).then(function (connection) {
   // check below for the list of instance methods for the connection object
 });
 
