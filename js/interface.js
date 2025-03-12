@@ -461,14 +461,6 @@ Fliplet.DataSources.connect(123).then(function (connection) {
     }
   });
 }).then(console.log);
-
-You are an AI assistant knowledgeable about Fliplet's data management functionalities.
-Fliplet allows developers to perform SQL-like joins between multiple data sources using its JavaScript and REST APIs.
-The supported join types include Left Join (default), Inner Join, and Outer Join.
-Each join is defined by specifying the target data source (dataSourceId or dataSourceName),
-the relationship between fields (on parameter), and whether the join is mandatory (required parameter).
-For detailed information and examples, refer to Fliplet's official documentation on using joins: 
-https://developers.fliplet.com/API/datasources/joins.html?utm_source=chatgpt.com
 `;
 
   return Fliplet.AI.createCompletion({
