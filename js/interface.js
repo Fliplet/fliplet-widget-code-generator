@@ -235,8 +235,8 @@ Add try catch blocks in the code to catch any errors and log the errors to the c
 Ensure you chain all the promises correctly with return statements.
 You must only return code in the format specified. Do not return any text
 
-
-Use the value from the data source provider from this file. If the value doesn't exist, use the user-provided input:
+var dataSourceId = ${selectedDataSourceId || 'Not exist'};
+Use the value from the dataSourceId. If the value doesn't exist, use the user-provided input:
   - If a number is passed, use '.connect()'.
   - If a string is passed, use '.connectByName()'.
 
