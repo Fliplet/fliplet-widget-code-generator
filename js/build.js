@@ -39,8 +39,14 @@ Fliplet.Widget.instance({
 
           const layoutResponse = await saveLayout(removedHtml);
 
-          const removedCss = removeCodeWithinDelimiters("css", currentSettings.page.settings.customSCSS);
-          const removedJs = removeCodeWithinDelimiters("js", currentSettings.page.settings.customJS);
+          const removedCss = removeCodeWithinDelimiters(
+            "css",
+            currentSettings.page.settings.customSCSS
+          );
+          const removedJs = removeCodeWithinDelimiters(
+            "js",
+            currentSettings.page.settings.customJS
+          );
           const saved = saveCssAndJs(removedCss, removedJs);
 
           // reload page preview
@@ -194,15 +200,12 @@ Fliplet.Widget.instance({
         }
 
         // Create the pattern and escape the string properly
-        const pattern = new RegExp(
-          `${start}[\\s\\S]*?${end}`,
-          'g'
-        );
-        
+        const pattern = new RegExp(`${start}[\\s\\S]*?${end}`, "g");
+
         // Remove the delimited code and clean up whitespace
         return oldCode
-          .replace(pattern, '')
-          .replace(/\n{3,}/g, '\n\n')
+          .replace(pattern, "")
+          .replace(/\n{3,}/g, "\n\n")
           .trim();
       }
 
