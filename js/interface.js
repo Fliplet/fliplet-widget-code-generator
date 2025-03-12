@@ -189,6 +189,7 @@ function saveGeneratedCode(parsedContent) {
 
   var data = Fliplet.Widget.getData();
   data.fields.dataSourceId = selectedDataSourceId;
+  data.fields.dataSourceName = selectedDataSourceName;
   data.fields.prompt = Fliplet.Helper.field("prompt").get();
   data.fields.layoutHTML = parsedContent.html;
   data.fields.css = parsedContent.css;
@@ -234,8 +235,11 @@ Add try catch blocks in the code to catch any errors and log the errors to the c
 Ensure you chain all the promises correctly with return statements.
 You must only return code in the format specified. Do not return any text
 
-If a data source is selected, the variables 'selectedDataSourceId' and 'selectedDataSourceName' will have values.
-Use 'selectedDataSourceId' when connecting via '.connect()', and use 'selectedDataSourceName' when connecting via '.connectByName()'. If these variables are not set, use the user-provided input: if a number is passed, use '.connect()', and if a string is passed, use '.connectByName()'.
+If a data source is selected, Fliplet.Widget.getData().fields.dataSourceId and Fliplet.Widget.getData().fields.dataSourceName will have values.
+Use 'Fliplet.Widget.getData().fields.dataSourceId' when connecting via '.connect()', and use 'Fliplet.Widget.getData().fields.dataSourceName' when connecting via '.connectByName()'.
+If these variables are not set, use the user-provided input:
+  -if a number is passed, use '.connect()',
+  -and if a string is passed, use '.connectByName()'.
 
 #### Connect using Data Source ID
 Fliplet.DataSources.connect(selectedDataSourceId || userProvidedInput).then(function (connection) {
