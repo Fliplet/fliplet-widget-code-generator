@@ -236,18 +236,18 @@ Ensure you chain all the promises correctly with return statements.
 You must only return code in the format specified. Do not return any text
 
 If a data source is selected, Fliplet.Widget.getData().fields.dataSourceId and Fliplet.Widget.getData().fields.dataSourceName will have values.
-Use 'Fliplet.Widget.getData().fields.dataSourceId' when connecting via '.connect()', and use 'Fliplet.Widget.getData().fields.dataSourceName' when connecting via '.connectByName()'.
+Use the value from 'Fliplet.Widget.getData().fields.dataSourceId' when connecting via '.connect()', and use the value from 'Fliplet.Widget.getData().fields.dataSourceName' when connecting via '.connectByName()' before creating the java script.
 If these variables are not set, use the user-provided input:
   -if a number is passed, use '.connect()',
   -and if a string is passed, use '.connectByName()'.
 
 #### Connect using Data Source ID
-Fliplet.DataSources.connect(selectedDataSourceId || userProvidedInput).then(function (connection) {
+Fliplet.DataSources.connect(Fliplet.Widget.getData().fields.dataSourceId || userProvidedInput).then(function (connection) {
   // check below for the list of instance methods for the connection object
 });
 
 #### Connect using Data Source Name
-Fliplet.DataSources.connectByName(selectedDataSourceName || userProvidedInput).then(function (connection) {
+Fliplet.DataSources.connectByName(Fliplet.Widget.getData().fields.dataSourceName || userProvidedInput).then(function (connection) {
   // check below for the list of instance methods for the connection object
 });
 
