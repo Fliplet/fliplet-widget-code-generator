@@ -3,7 +3,9 @@ Fliplet.Widget.instance({
   name: "ai-feature",
   displayName: "AI feature",
   render: {
-    template: '<div class="ai-feature-content"></div>',
+    template: `<div class="ai-feature-content">
+                <div class="well text-center"></div>
+              </div>`,
     ready: function () {
       // Initialize children components when this widget is ready
       Fliplet.Widget.initializeChildren(this.$el, this);

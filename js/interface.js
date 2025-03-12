@@ -1,5 +1,6 @@
 var selectedDataSourceId = null;
 var widgetId = Fliplet.Widget.getDefaultId();
+var selectedDataSourceName = null;
 
 Fliplet.Widget.generateInterface({
   fields: [
@@ -37,6 +38,7 @@ Fliplet.Widget.generateInterface({
         // Listen for events fired from the provider
         if (eventName === "dataSourceSelect") {
           selectedDataSourceId = data.id;
+          selectedDataSourceName = data.name;
         }
       },
       beforeSave: function (value) {
@@ -232,13 +234,16 @@ Add try catch blocks in the code to catch any errors and log the errors to the c
 Ensure you chain all the promises correctly with return statements.
 You must only return code in the format specified. Do not return any text
 
-If you get asked to use datasource js api for e.g. if you need to save data from a form to a datasource or need to read data dynamic data to show it on the screen you need to use the following api's: 
+If a data source is selected, the variables 'selectedDataSourceId' and 'selectedDataSourceName' will have values.
+Use 'selectedDataSourceId' when connecting via '.connect()', and use 'selectedDataSourceName' when connecting via '.connectByName()'. If these variables are not set, use the user-provided input: if a number is passed, use '.connect()', and if a string is passed, use '.connectByName()'.
 
-### Connect to a data source by Name
+#### Connect using Data Source ID
+Fliplet.DataSources.connect(selectedDataSourceId || userProvidedInput).then(function (connection) {
+  // check below for the list of instance methods for the connection object
+});
 
-You can also connect to a data source by its name (case-sensitive) using the 'connectByName' method.
-
-Fliplet.DataSources.connectByName("Attendees").then(function (connection) {
+#### Connect using Data Source Name
+Fliplet.DataSources.connectByName(selectedDataSourceName || userProvidedInput).then(function (connection) {
   // check below for the list of instance methods for the connection object
 });
 
@@ -256,7 +261,7 @@ connection.find().then(function (records) {
 
 Querying options are based on the [Sift.js](https://github.com/Fliplet/sift.js) operators, which mimic MongoDB querying operators. Here are the supported operators from Sift.js:
 
-  - '$in', '$nin', '$exists', '$gte', '$gt', '$lte', '$lt', '$eq', '$ne', '$iLike', '$mod', '$all', '$and', '$or', $nor'
+  - '$in', '$nin', '$exists', '$gte', '$gt', '$lte', '$lt', '$eq', '$ne', '$iLike', '$mod', '$all', '$and', '$or', '$nor'
 
 
 Fliplet also supports a custom '$filters' operator with some unique conditional logic such as case-insensitive match or date & time comparison. See example below.
@@ -456,13 +461,13 @@ connection.insert({
 "dataSourceId": 1392773
 }
 
-If you asked to build a feature that requires navigating the user to another screen use the navigate JS API to do this: 
+If you are asked to build a feature that requires navigating the user to another screen use the navigate JS API to do this: 
 
 Fliplet.Navigate.screen('Menu') where it accepts the screen name as a parameter. 
 
 If you want to show a message to the end user do not use alerts but use our toast message library; The JS API is Fliplet.UI.Toast(message) where message is the text you want to show the user. 
 
-If you want to get the logged in users details you can use endpoint: 
+If you want to get the logged-in user's details, you can use the following endpoint: 
 Fliplet.User.getCachedSession().then(function (session) {
   var user = _.get(session, 'entries.dataSource.data');
 

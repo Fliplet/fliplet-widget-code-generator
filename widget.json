@@ -22,7 +22,9 @@
       "bootstrap",
       "fliplet-core",
       "fliplet-helper",
-      "fliplet-datasources"
+      "fliplet-datasources",
+      "fliplet-communicate",
+      "fliplet-csv"
     ],
     "assets": [
       "css/build.css",
