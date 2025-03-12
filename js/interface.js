@@ -160,45 +160,28 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 For the HTML do not include any head tags, just return the html for the body. 
-Use bootstrap for css and styling.
+Use bootstrap v3.4.1 for css and styling.
 Do not include any backticks in the response.
 Ensure there are no syntax errors in the code and that column names with spaced in them are wrapped with square brackets.
 Add inline comments for the code so technical users can make edits to the code. 
 Add try catch blocks in the code to catch any errors and log the errors to the console. 
 Ensure you chain all the promises correctly with return statements.
-You must only return code in the format specified. Do not return any text` +
-    `If you get asked to use datasource js api for e.g. if you need to save data from a form to a datasource or need to read data dynamic data to show it on the screen you need to use the following API: 
+You must only return code in the format specified. Do not return any text.
+
+If you get asked to use datasource js api for e.g. if you need to save data from a form to a datasource or need to read data dynamic data to show it on the screen you need to use the following API: 
 
 ### Connect to a data source by Name
 
 You can also connect to a data source by its name (case-sensitive) using the 'connectByName' method.
 
-Fliplet.DataSources.connectByName(${selectedDataSourceName || "Attendees"}).then(function (connection) {
+Fliplet.DataSources.connectByName(${
+      selectedDataSourceName || "Attendees"
+    }).then(function (connection) {
   // check below for the list of instance methods for the connection object
 });
 
 ---
-
-` +
-    // +
-    // `Selected data source value is: ${selectedDataSourceId || 'Not exist'}.
-    // Use the value from the 'Selected data source value' to connect to the data source. If the value is equal to 'Not exist', use the user-provided input:
-    //   - If a number is passed, use '.connect()'.
-    //   - If a string is passed, use '.connectByName()'.
-
-    // #### Connect using Data Source ID
-    // Fliplet.DataSources.connect(value || userProvidedInput).then(function (connection) {
-    //   // check below for the list of instance methods for the connection object
-    // });
-
-    // #### Connect using Data Source Name
-    // Fliplet.DataSources.connectByName(userProvidedInput).then(function (connection) {
-    //   // check below for the list of instance methods for the connection object
-    // });
-
-    // ---`
-
-    `#### Fetch all records
+#### Fetch all records
 
 // use "find" with no options to get all entries
 connection.find().then(function (records) {
@@ -386,7 +369,6 @@ To insert a record into a data source, use the 'connection.insert' method by pas
 
 // Using a JSON object
 connection.insert({
-  id: 3,
   name: 'Bill'
 });
 
@@ -427,7 +409,68 @@ Fliplet.User.getCachedSession().then(function (session) {
   // contains all columns found on the connected dataSource entry for user.Email
   console.log(user);
 });
+
+The Fliplet platform enables developers to perform SQL-like joins between multiple data sources using its JavaScript (JS) and REST APIs.
+This functionality allows for efficient data retrieval across related data sets, similar to traditional SQL operations.
+
+Types of Joins Supported:
+Left Join (Default): Fetches all records from the primary data source and the matching records from the joined data source.
+If no match is found, the result is still included with null values for the joined data.
+Example: Retrieving articles along with their comments, even if some articles have no comments.
+
+Fliplet.DataSources.connect(123).then(function (connection) {
+  return connection.find({
+    join: {
+      Comments: {
+        dataSourceId: 456,
+        on: {
+          'data.ID': 'data.ArticleID'
+        }
+      }
+    }
+  });
+}).then(console.log);
+
+
+Inner Join: Fetches only those records from the primary data source that have matching entries in the joined data source.
+Example: Retrieving only articles that have at least one comment.
+
+Fliplet.DataSources.connect(123).then(function (connection) {
+  return connection.find({
+    join: {
+      Comments: {
+        dataSourceId: 456,
+        on: {
+          'data.ID': 'data.ArticleID'
+        },
+        required: true
+      }
+    }
+  });
+}).then(console.log);
+
+Outer Join: Combines entries from both data sources, returning all records from both, with nulls in places where no match exists.
+Example: Merging two sets of articles from different data sources.
+
+Fliplet.DataSources.connect(123).then(function (connection) {
+  return connection.find({
+    join: {
+      AdditionalArticles: {
+        dataSourceId: 789
+      }
+    }
+  });
+}).then(console.log);
+
+You are an AI assistant knowledgeable about Fliplet's data management functionalities.
+Fliplet allows developers to perform SQL-like joins between multiple data sources using its JavaScript and REST APIs.
+The supported join types include Left Join (default), Inner Join, and Outer Join.
+Each join is defined by specifying the target data source (dataSourceId or dataSourceName),
+the relationship between fields (on parameter), and whether the join is mandatory (required parameter).
+For detailed information and examples, refer to Fliplet's official documentation on using joins: 
+https://developers.fliplet.com/API/datasources/joins.html?utm_source=chatgpt.com
 `;
+
   return Fliplet.AI.createCompletion({
     model: "o3-mini",
     messages: [
