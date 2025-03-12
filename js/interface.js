@@ -233,26 +233,44 @@ Ensure there are no syntax errors in the code and that column names with spaced 
 Add inline comments for the code so technical users can make edits to the code. 
 Add try catch blocks in the code to catch any errors and log the errors to the console. 
 Ensure you chain all the promises correctly with return statements.
-You must only return code in the format specified. Do not return any text
+You must only return code in the format specified. Do not return any text` +
 
-Selected data source value is: ${selectedDataSourceId || 'Not exist'}.
-Use the value from the 'Selected data source value' to connect to the data source. If the value is equal to 'Not exist', use the user-provided input:
-  - If a number is passed, use '.connect()'.
-  - If a string is passed, use '.connectByName()'.
 
-#### Connect using Data Source ID
-Fliplet.DataSources.connect(value || userProvidedInput).then(function (connection) {
-  // check below for the list of instance methods for the connection object
-});
+`If you get asked to use datasource js api for e.g. if you need to save data from a form to a datasource or need to read data dynamic data to show it on the screen you need to use the following API: 
 
-#### Connect using Data Source Name
-Fliplet.DataSources.connectByName(userProvidedInput).then(function (connection) {
+### Connect to a data source by Name
+
+You can also connect to a data source by its name (case-sensitive) using the 'connectByName' method.
+
+Fliplet.DataSources.connectByName(${selectedDataSourceId ? selectedDataSourceId : "Attendees"}).then(function (connection) {
   // check below for the list of instance methods for the connection object
 });
 
 ---
 
-#### Fetch all records
+`
+
+
+// + 
+// `Selected data source value is: ${selectedDataSourceId || 'Not exist'}.
+// Use the value from the 'Selected data source value' to connect to the data source. If the value is equal to 'Not exist', use the user-provided input:
+//   - If a number is passed, use '.connect()'.
+//   - If a string is passed, use '.connectByName()'.
+
+// #### Connect using Data Source ID
+// Fliplet.DataSources.connect(value || userProvidedInput).then(function (connection) {
+//   // check below for the list of instance methods for the connection object
+// });
+
+// #### Connect using Data Source Name
+// Fliplet.DataSources.connectByName(userProvidedInput).then(function (connection) {
+//   // check below for the list of instance methods for the connection object
+// });
+
+// ---`
+
++
+`#### Fetch all records
 
 // use "find" with no options to get all entries
 connection.find().then(function (records) {
