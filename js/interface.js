@@ -236,7 +236,7 @@ Ensure you chain all the promises correctly with return statements.
 You must only return code in the format specified. Do not return any text
 
 
-If a data source is selected, use the value from variable 'selectedDataSourceId' (check the data source provider). If the value doesn't exist, use the user-provided input:
+Use the value from the data source provider from this file. If the value doesn't exist, use the user-provided input:
   - If a number is passed, use '.connect()'.
   - If a string is passed, use '.connectByName()'.
 
