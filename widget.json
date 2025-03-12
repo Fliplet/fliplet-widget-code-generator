@@ -21,7 +21,8 @@
       "jquery",
       "bootstrap",
       "fliplet-core",
-      "fliplet-helper"
+      "fliplet-helper",
+      "fliplet-datasources"
     ],
     "assets": [
       "css/build.css",
