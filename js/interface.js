@@ -235,20 +235,21 @@ Add try catch blocks in the code to catch any errors and log the errors to the c
 Ensure you chain all the promises correctly with return statements.
 You must only return code in the format specified. Do not return any text
 
-If a data source is selected, Fliplet.Widget.getData().fields.dataSourceId and Fliplet.Widget.getData().fields.dataSourceName will have values.
-Use the actual values from 'Fliplet.Widget.getData().fields.dataSourceId' and 'Fliplet.Widget.getData().fields.dataSourceName' (e.g., 123 or 'Users') when creating the JavaScript prompt, rather than referencing 'Fliplet.Widget.getData().fields.dataSourceId' and 'Fliplet.Widget.getData().fields.dataSourceName' directly.
+
+If a data source is selected, first retrieve the values from 'Fliplet.Widget.getData().fields.dataSourceId' and 'Fliplet.Widget.getData().fields.dataSourceName'.
+Use these extracted values directly when constructing the JavaScript code, rather than including the retrieval logic in the output.
 
 If these values are not set, use the user-provided input:
   - If a number is passed, use '.connect()'.
   - If a string is passed, use '.connectByName()'.
 
 #### Connect using Data Source ID
-Fliplet.DataSources.connect(123 || userProvidedInput).then(function (connection) {
+Fliplet.DataSources.connect(retrievedDataSourceId || userProvidedInput).then(function (connection) {
   // check below for the list of instance methods for the connection object
 });
 
 #### Connect using Data Source Name
-Fliplet.DataSources.connectByName('Users' || userProvidedInput).then(function (connection) {
+Fliplet.DataSources.connectByName(retrievedDataSourceName || userProvidedInput).then(function (connection) {
   // check below for the list of instance methods for the connection object
 });
 
