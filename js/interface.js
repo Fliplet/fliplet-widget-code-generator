@@ -146,7 +146,7 @@ You are to only return the HTML, CSS, JS for the following user request.
 The format of the response should be as follows: 
 
 ### HTML
-<div>
+<div class="ai-feature-${widgetId}">
   <h1>Hello World</h1>
 </div>
 ### CSS
