@@ -141,7 +141,7 @@ function generateCode() {
 function queryAI(prompt) {
   let systemPrompt =
     `
-You are to only return the HTML, CSS, JS for the following user request. 
+You are to only return the HTML, CSS, JS for the following user request. In the JS make sure that any selectors are using .ai-feature-${widgetId}
 
 The format of the response should be as follows: 
 
@@ -155,7 +155,7 @@ div {
 }
 ### JavaScript
 document.addEventListener('DOMContentLoaded', function() {
-  const div = document.querySelector('div');
+  const div = document.querySelector('.ai-feature-${widgetId} div');
   div.style.color = 'blue';
 });
 
@@ -393,6 +393,8 @@ If referencing data from a data source, the entry will be found under the "data"
 "deletedAt": null,
 "dataSourceId": 1392773
 }
+
+These are the list of columns in the data source selected by the user: ${dataSourceColumns}, you must one of these when referencing data from a data source. 
 
 If you are asked to build a feature that requires navigating the user to another screen use the navigate JS API to do this: 
 
