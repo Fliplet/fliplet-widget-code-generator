@@ -16,6 +16,12 @@ Fliplet.Widget.instance({
       const organizationId = Fliplet.Env.get("organizationId");
       const userId = Fliplet.Env.get("user")?.id || "";
 
+      if (Fliplet.Env.get("mode") == "interact") {
+        $(".ai-feature-content").show();
+      } else {
+        $(".ai-feature-content").hide();
+      }
+
       AI.fields = _.assign(
         {
           dataSourceId: "",
