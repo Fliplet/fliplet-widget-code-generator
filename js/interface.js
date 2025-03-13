@@ -3,6 +3,10 @@ var selectedDataSourceName = null;
 var widgetId = Fliplet.Widget.getDefaultId();
 var dataSourceColumns = [];
 
+Fliplet.Widget.setSaveButtonLabel('Close');
+Fliplet.Widget.resetSaveButtonLabel();
+Fliplet.Widget.toggleCancelButton(false);
+
 Fliplet.Widget.generateInterface({
   fields: [
     {
