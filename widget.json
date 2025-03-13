@@ -1,9 +1,9 @@
 {
-  "name": "Code generator",
-  "package": "com.fliplet.code-generator",
+  "name": "AI feature",
+  "package": "com.fliplet.ai-feature",
   "version": "1.0.0",
   "icon": "img/icon.png",
-  "tags": ["type:component", "category:general", "beta:true"],
+  "tags": ["type:component", "category:text", "beta:true"],
   "provider_only": false,
   "references": [],
   "settings": {
@@ -13,25 +13,22 @@
   },
   "html_tag": "div",
   "interface": {
-  "interface": {
     "dependencies": ["fliplet-core", "fliplet-studio-ui", "fliplet-datasources"],
-    "assets": ["js/interface.js"]
-  },
-    "assets": [
-      "js/interface.js"
-    ]
+    "assets": ["js/interface.js", "css/interface.css"]
   },
   "build": {
     "dependencies": [
       "jquery",
       "bootstrap",
       "fliplet-core",
-      "fliplet-helper"
+      "fliplet-helper",
+      "fliplet-datasources",
+      "fliplet-communicate",
+      "fliplet-csv"
     ],
     "assets": [
       "css/build.css",
       "js/build.js"
-    ],
-    "appAssets": []
+    ]
   }
 }

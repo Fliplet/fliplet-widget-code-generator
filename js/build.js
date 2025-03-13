@@ -1,401 +1,230 @@
 // Register this widget instance
 Fliplet.Widget.instance({
-  name: "code-generator",
-  displayName: "Code generator",
+  name: "ai-feature",
+  displayName: "AI feature",
   render: {
+    template: `<div class="ai-feature-content">
+                <div class="well text-center">AI feature</div>
+              </div>`,
     ready: function () {
       // Initialize children components when this widget is ready
       Fliplet.Widget.initializeChildren(this.$el, this);
 
-      const pageId = Fliplet.Env.get("pageId");
-      const appId = Fliplet.Env.get("appId");
       const AI = this;
-      const $aiContainer = $(AI.$el);
+      const appId = Fliplet.Env.get("appId");
+      const pageId = Fliplet.Env.get("pageId");
+      const organizationId = Fliplet.Env.get("organizationId");
+      const userId = Fliplet.Env.get("user")?.id || "";
 
-      if (Fliplet.Env.get("interact")) {
-        $aiContainer.html(`
-          <div class="component-overlay">
-            <p>The code will be generated when you save the page.</p>
-          </div>
-        `);
+      if (Fliplet.Env.get("mode") == "interact") {
+        $(".ai-feature-content").show();
       } else {
-        $aiContainer.html(`
-          <div class="overlay-loading">
-            <p>Generating code, please wait...</p>
-          </div>
-        `);
+        $(".ai-feature-content").hide();
       }
 
       AI.fields = _.assign(
         {
-          aiModel: "",
+          dataSourceId: "",
           prompt: "",
+          css: "",
+          javascript: "",
+          layoutHTML: "",
+          regenerateCode: false,
         },
         AI.fields
       );
 
-      let systemPrompt = `
-You are to only return the HTML, CSS, JS for the following user request. 
+      const widgetId = AI.fields.aiFeatureId;
+     
+      Fliplet.Hooks.on("componentEvent", async function (event) {
+        if (
+          event?.type == "removed" &&
+          widgetId == event?.removed[0]?.widgetId
+        ) {
+          var currentSettings = await getCurrentPageSettings();
 
-The format of the response should be as follows: 
+          var removedHtml = removeHtmlCode(currentSettings);
 
-### HTML
-<div>
-  <h1>Hello World</h1>
-</div>
-### CSS
-div {
-  color: red;
-}
-### JavaScript
-document.addEventListener('DOMContentLoaded', function() {
-  const div = document.querySelector('div');
-  div.style.color = 'blue';
-});
+          const layoutResponse = await saveLayout(removedHtml);
 
-For the HTML do not include any head tags, just return the html for the body. 
-Use bootstrap for css and styling.
-Do not include any backticks in the response.
-Ensure there are no syntax errors in the code and that column names with spaced in them are wrapped with square brackets.
-Add inline comments for the code so technical users can make edits to the code. 
-Add try catch blocks in the code to catch any errors and log the errors to the console. 
-Ensure you chain all the promises correctly with return statements.
-You must only return code in the format specified. Do not return any text
+          const removedCss = removeCodeWithinDelimiters(
+            "css",
+            currentSettings.page.settings.customSCSS
+          );
+          const removedJs = removeCodeWithinDelimiters(
+            "js",
+            currentSettings.page.settings.customJS
+          );
+          const saved = saveCssAndJs(removedCss, removedJs);
 
-If you get asked to use datasource js api for e.g. if you need to save data from a form to a datasource or need to read data dynmaic data to show it on the screen you need to use the following api's: 
-
-### Connect to a data source by Name
-
-You can also connect to a datas ource by its name (case-sensitive) using the 'connectByName' method.
-
-Fliplet.DataSources.connectByName("Attendees").then(function (connection) {
-  // check below for the list of instance methods for the connection object
-});
-
----
-
-#### Fetch all records
-
-// use "find" with no options to get all entries
-connection.find().then(function (records) {
-  // records is an array
-});
-
-
-#### Fetch records with a query
-
-Querying options are based on the [Sift.js](https://github.com/Fliplet/sift.js) operators, which mimic MongoDB querying operators. Here are the supported operators from Sift.js:
-
-  - '$in', '$nin', '$exists', '$gte', '$gt', '$lte', '$lt', '$eq', '$ne', '$iLike', '$mod', '$all', '$and', '$or', $nor'
-
-
-Fliplet also supports a custom '$filters' operator with some unique conditional logic such as case-insensitive match or date & time comparison. See example below.
-
-A few examples to get you started:
-
-// Find records where column "sum" is greater than 10 and column "name"
-// is either "Nick" or "Tony"
-connection.find({
-  where: {
-    sum: { $gt: 10 },
-    name: { $in: ['Nick', 'Tony'] }
-  }
-});
-
-// Find a case insensitive and partial match to the "Email" column. For e.g. it will match with bobsmith@email.com or Bobsmith@email.com or smith@email.com
-connection.find({
-  where: {
-    Email: { $iLike: 'BobSmith@email.com' }
-  }
-});
-
-// Find records where column "email" matches the domain "example.org"
-connection.find({
-  where: {
-    email: { $regex: /example\.org$/i }
-  }
-});
-
-// Nested queries using the $or operator: find records where either "name" is "Nick"
-// or "address" is "UK" and "name" is "Tony"
-connection.find({
-  where: {
-    $or: [
-      { name: 'Nick' },
-      { address: 'UK', name: 'Tony' }
-    ]
-  }
-});
-
-// Find records where the column "country" is not "Germany" or "France"
-// and "createdAt" is on or after a specific date
-connection.find({
-  where: {
-    country: { $nin: ['Germany', 'France'] },
-    createdAt: { $gte: '2018-03-20' }
-  }
-});
-
-// Use Fliplet's custom $filters operator
-// The "==" and "contains" conditions are optimized to perform better with Fliplet's database
-connection.find({
-  where: {
-    // Find entries that match ALL of the following conditions
-    $filters: [
-      // Find entries with a case insensitive match on the column
-      {
-        column: 'Email',
-        condition: '==',
-        value: 'user@email.com'
-      },
-      // Find entries where the column does not match the value
-      {
-        column: 'Email',
-        condition: '!=',
-        value: 'user@email.com'
-      },
-      // Find entries where the column is greater than the value
-      {
-        column: 'Size',
-        condition: '>',
-        value: 10
-      },
-      // Find entries where the column is greater than or equal to the value
-      {
-        column: 'Size',
-        condition: '>=',
-        value: 10
-      },
-      // Find entries where the column is less than the value
-      {
-        column: 'Size',
-        condition: '<',
-        value: 10
-      },
-      // Find entries where the column is less than or equal to the value
-      {
-        column: 'Size',
-        condition: '<=',
-        value: 10
-      },
-      // Find entries with a case insensitive partial match on the column
-      {
-        column: 'Email',
-        condition: 'contains',
-        value: '@email.com'
-      },
-      // Find entries where the column is empty based on _.isEmpty()
-      {
-        column: 'Tags',
-        condition: 'empty'
-      },
-      // Find entries where the column is not empty based on _.isEmpty()
-      {
-        column: 'Tags',
-        condition: 'notempty'
-      },
-      // Find entries where the column is in between 2 numeric values (inclusive)
-      {
-        column: 'Size',
-        condition: 'between',
-        value: {
-          from: 10,
-          to: 20
+          // reload page preview
+          Fliplet.Studio.emit("reload-page-preview");
+          return { removedHtml, layoutResponse };
         }
-      },
-      // Find entries where the column is one of the values
-      {
-        column: 'Category',
-        condition: 'oneof',
-        // value can also be a CSV string
-        value: ['News', 'Tutorial']
-      },
-      // Find entries where the column matches a date comparison
-      {
-        column: 'Birthday',
-        // Use dateis, datebefore or dateafter to match
-        // dates before and after the comparison value
-        condition: 'dateis',
-        value: '1978-04-30'
-        // Optionally provide a unit of comparison:
-        //  - year
-        //  - quarter
-        //  - month
-        //  - week
-        //  - day
-        //  - hour
-        //  - minute
-        //  - second
-        // unit: 'month'
-      },
-      // Find entries where the column is before the a certain time of the day
-      {
-        column: 'Start time',
-        condition: 'datebefore',
-        value: '17:30'
-      },
-      // Find entries where the column is after a timestamp
-      {
-        column: 'Birthday',
-        condition: 'dateafter',
-        // Provide a full timestamp for comparison in YYYY-MM-DD HH:mm format
-        value: '2020-03-10 13:03'
-      },
-      // Find entries where the column is between 2 dates (inclusive)
-      {
-        column: 'Birthday',
-        condition: 'datebetween',
-        from: {
-          value: '1978-01-01'
-        },
-        to: {
-          value: '1978-12-31'
-        }
+      });
+
+      if (!AI.fields.prompt) {
+        Fliplet.UI.Toast("Please enter a prompt");
+        return;
+      } else if (!AI.fields.regenerateCode) {
+        return;
       }
-    ]
-  }
-});
 
-### Insert a single record into the data source
+      async function getCurrentPageSettings() {
+        return await Fliplet.API.request({
+          url: `v1/apps/${appId}/pages/${pageId}?richLayout`,
+          method: "GET",
+        }).catch((error) => {
+          return Fliplet.UI.Toast("Error getting current settings: " + error);
+        });
+      }
 
-To insert a record into a data source, use the 'connection.insert' method by passing the data to be inserted as a **JSON** object or a **FormData** object.
-
-// Using a JSON object
-connection.insert({
-  id: 3,
-  name: 'Bill'
-});
-
-### Format of data returned from JS API
-
-{
-"id": 404811749,
-"data": {
-"Email": "hrenfree1t@hugedomains.com",
-"Title": "Manager",
-"Prefix": "Mrs",
-"Last Name": "Renfree",
-"Department": "Operations",
-"First Name": "Hayley",
-"Middle Name": "Issy"
-},
-"order": 0,
-"createdAt": "2025-02-19T17:13:51.507Z",
-"updatedAt": "2025-02-19T17:13:51.507Z",
-"deletedAt": null,
-"dataSourceId": 1392773
-}
-
-If you asked to build a feature that requries navigating the user to another screen use the navigate JS API to do this: 
-
-Fliplet.Navigate.screen('Menu') where it accepts the screen name as a parameter. 
-
-If you want to show a message to the end user do not use alerts but use our toast message library; The JS API is Fliplet.UI.Toast(message) where message is the text you want to show the user. 
-
-If you want to get the logged in users details you can use endpoint: 
-Fliplet.User.getCachedSession().then(function (session) {
-  var user = _.get(session, 'entries.dataSource.data');
-
-  if (!user) {
-    return; // user is not logged in
-  }
-
-  // contains all columns found on the connected dataSource entry for user.Email
-  console.log(user);
-});
-`;
-
-      async function queryAI(prompt) {
-        const result = await Fliplet.AI.createCompletion({
-          model: AI.fields.aiModel,
-          messages: [
-            { role: "system", content: systemPrompt },
-            { role: "user", content: prompt },
-          ],
-          //temperature: 0,
-          'reasoning_effort': 'low'
+      async function saveCssAndJs(css, js) {
+        var response = await Fliplet.API.request({
+          url: `v1/apps/${appId}/pages/${pageId}/settings`,
+          method: "POST",
+          data: {
+            customSCSS: css, // Inject CSS code
+            customJS: js, // Inject JavaScript code
+          },
         });
 
-        // Parse the response
-        const response = result.choices[0].message.content;
+        return response;
+      }
 
-        // Initialize variables
-        let html = "";
-        let css = "";
-        let javascript = "";
-
-        // Extract HTML
-        const htmlMatch = response.match(/### HTML\n([\s\S]*?)(?=### CSS|$)/);
-        if (htmlMatch) {
-          html = htmlMatch[1].trim();
-        }
-
-        // Extract CSS
-        const cssMatch = response.match(
-          /### CSS\n([\s\S]*?)(?=### JavaScript|$)/
-        );
-        if (cssMatch) {
-          css = cssMatch[1].trim();
-        }
-
-        // Extract JavaScript
-        const jsMatch = response.match(/### JavaScript\n([\s\S]*?)(?=$)/);
-        if (jsMatch) {
-          javascript = jsMatch[1].trim();
-        }
-
-        return {
-          html,
-          css,
-          javascript,
-        };
+      async function saveLayout(html) {
+        return await Fliplet.API.request({
+          url: `v1/apps/${appId}/pages/${pageId}/rich-layout`,
+          method: "PUT",
+          data: { richLayout: html },
+        });
       }
 
       async function saveGeneratedCode(parsedContent) {
         try {
+          // get current page settings
+          const currentSettings = await getCurrentPageSettings();
+
           // Save CSS and JavaScript
-          const settingsResponse = await Fliplet.API.request({
-            url: `v1/apps/${appId}/pages/${pageId}/settings`,
-            method: "POST",
-            data: {
-              customSCSS: parsedContent.css,
-              customJS: parsedContent.javascript,
-            },
+          const settingsResponse = await saveCssAndJs(
+            updateCodeWithinDelimiters(
+              "css",
+              parsedContent.css,
+              currentSettings.page.settings.customSCSS
+            ), // Inject CSS code
+            updateCodeWithinDelimiters(
+              "js",
+              parsedContent.javascript,
+              currentSettings.page.settings.customJS
+            )
+          );
+
+          const htmlCodeToInject = injectHtmlCode(currentSettings);
+
+          const layoutResponse = await saveLayout(htmlCodeToInject);
+
+          // save logs
+          const logAiCallResponse = await logAiCall({
+            prompt: AI.fields.prompt,
+            aiCssResponse: AI.fields.css,
+            aiJsResponse: AI.fields.javascript,
+            aiLayoutResponse: AI.fields.layoutHTML,
           });
 
-          // Save HTML
-          const layoutResponse = await Fliplet.API.request({
-            url: `v1/apps/${appId}/pages/${pageId}/rich-layout`,
-            method: "PUT",
-            data: {
-              richLayout: parsedContent.html,
-            },
-          });
+          // reload page preview
+          Fliplet.Studio.emit("reload-page-preview");
 
-          return { settingsResponse, layoutResponse };
+          return { settingsResponse, layoutResponse, logAiCallResponse };
         } catch (error) {
-          console.error("Error saving code:", error);
           throw error;
         }
       }
 
-      if (
-        !Fliplet.Env.get("interact") &&
-        !$(document).find(".code-generator-content").length
-      ) {
-        return queryAI(AI.fields.prompt)
-          .then(function (parsedContent) {
-            // Save the generated code
-            return saveGeneratedCode(parsedContent);
-          })
-          .then(() => {
-            // Reload the page to show the newly generated content
-            window.location.reload();
-          })
-          .catch(function (error) {
-            console.error("Error in process:", error);
-            return Promise.reject(error);
-          });
+      function injectHtmlCode(currentSettings) {
+        // code from AI
+        var codeGenContainer = `<div class="ai-feature-${widgetId}">${parsedContent.layoutHTML}</div>`;
+        // Wrap response inside a temporary container
+        let $wrapper = $("<div>").html(currentSettings.page.richLayout);
+        // remove existing ai feature container
+        $wrapper.find(`.ai-feature-${widgetId}`).remove();
+        // Find `<fl-ai-feature>` and add a sibling after it
+        $wrapper.find(`fl-ai-feature[cid="${widgetId}"]`).after(codeGenContainer);
+        return $wrapper.html();
+      }
+
+      function removeHtmlCode(currentSettings) {
+        let $wrapper = $("<div>").html(currentSettings.page.richLayout);
+        // remove existing ai feature container
+        $wrapper.find(`.ai-feature-${widgetId}`).remove();
+        return $wrapper.html();
+      }
+
+      function logAiCall(data) {
+        return Fliplet.App.Logs.create({
+          data: {
+            type: "ai.code.feature",
+            data: data,
+            userId: userId,
+            appId: appId,
+            organizationId: organizationId,
+          }
+        });
+      }
+
+      function updateCodeWithinDelimiters(type, newCode, oldCode = "") {
+        let start, end;
+
+        if (type == "js") {
+          start = `// start-ai-feature ${widgetId}`;
+          end = `// end-ai-feature ${widgetId}`;
+        } else {
+          start = `/* start-ai-feature ${widgetId} */`;
+          end = `/* end-ai-feature ${widgetId} */`;
+        }
+
+        // Check if delimiters exist in the old code
+        if (oldCode.includes(start) && oldCode.includes(end)) {
+          // Replace content between delimiters
+          return oldCode.replace(
+            new RegExp(start + "[\\s\\S]*?" + end, "g"),
+            start + "\n" + newCode + "\n" + end
+          );
+        } else {
+          // Append new code with delimiters at the end
+          return oldCode + "\n\n" + start + "\n" + newCode + "\n" + end;
+        }
+      }
+
+      function removeCodeWithinDelimiters(type, oldCode = "") {
+        let start, end;
+
+        if (type == "js") {
+          start = `// start-ai-feature ${widgetId}`;
+          end = `// end-ai-feature ${widgetId}`;
+        } else {
+          // For CSS, we need to escape the special characters properly
+          start = `/\\* start-ai-feature ${widgetId} \\*/`;
+          end = `/\\* end-ai-feature ${widgetId} \\*/`;
+        }
+
+        // Create the pattern and escape the string properly
+        const pattern = new RegExp(`${start}[\\s\\S]*?${end}`, "g");
+
+        // Remove the delimited code and clean up whitespace
+        return oldCode
+          .replace(pattern, "")
+          .replace(/\n{3,}/g, "\n\n")
+          .trim();
+      }
+
+      var parsedContent = {
+        css: AI.fields.css,
+        javascript: AI.fields.javascript,
+        layoutHTML: AI.fields.layoutHTML,
+      };
+
+      if (AI.fields.css && AI.fields.javascript && AI.fields.layoutHTML) {
+        saveGeneratedCode(parsedContent);
       }
     },
   },
