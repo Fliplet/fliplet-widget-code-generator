@@ -79,7 +79,6 @@ Fliplet.Widget.generateInterface({
         toggleLoader(false);
 
         Fliplet.Widget.setSaveButtonLabel("Close");
-        Fliplet.Widget.resetSaveButtonLabel();
         Fliplet.Widget.toggleCancelButton(false);
       },
     },
