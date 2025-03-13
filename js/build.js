@@ -148,7 +148,7 @@ Fliplet.Widget.instance({
         // remove existing ai feature container
         $wrapper.find(`.ai-feature-${widgetId}`).remove();
         // Find `<fl-ai-feature>` and add a sibling after it
-        $wrapper.find(`fl-ai-feature[data-id="${widgetId}"]`).after(codeGenContainer);
+        $wrapper.find(`fl-ai-feature[cid="${widgetId}"]`).after(codeGenContainer);
         return $wrapper.html();
       }
 
