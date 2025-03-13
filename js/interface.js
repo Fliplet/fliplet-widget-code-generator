@@ -41,11 +41,15 @@ Fliplet.Widget.generateInterface({
           selectedDataSourceId = data.id;
           selectedDataSourceName = data.name;
 
-          Fliplet.DataSources.getById(selectedDataSourceId, {
-            attributes: ["columns"],
-          }).then(function (response) {
-            dataSourceColumns = response.columns;
-          });
+          if (selectedDataSourceId) {
+            Fliplet.DataSources.getById(selectedDataSourceId, {
+              attributes: ["columns"],
+            }).then(function (response) {
+              dataSourceColumns = response.columns;
+            });
+          } else {
+            dataSourceColumns = [];
+          }
         }
       },
       beforeSave: function (value) {
