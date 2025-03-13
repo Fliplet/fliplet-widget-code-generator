@@ -1,6 +1,7 @@
 var selectedDataSourceId = null;
 var selectedDataSourceName = null;
 var widgetId = Fliplet.Widget.getDefaultId();
+var dataSourceColumns = [];
 
 Fliplet.Widget.generateInterface({
   fields: [
@@ -39,6 +40,12 @@ Fliplet.Widget.generateInterface({
         if (eventName === "dataSourceSelect") {
           selectedDataSourceId = data.id;
           selectedDataSourceName = data.name;
+
+          Fliplet.DataSources.getById(selectedDataSourceId, {
+            attributes: ["columns"],
+          }).then(function (response) {
+            dataSourceColumns = response.columns;
+          });
         }
       },
       beforeSave: function (value) {
@@ -139,8 +146,7 @@ function generateCode() {
 }
 
 function queryAI(prompt) {
-  let systemPrompt =
-    `
+  let systemPrompt = `
 You are to only return the HTML, CSS, JS for the following user request. In the JS make sure that any selectors are using .ai-feature-${widgetId}
 
 The format of the response should be as follows: 
@@ -175,8 +181,8 @@ If you get asked to use datasource js api for e.g. if you need to save data from
 You can also connect to a data source by its name (case-sensitive) using the 'connectByName' method.
 
 Fliplet.DataSources.connectByName(${
-      selectedDataSourceName || "Attendees"
-    }).then(function (connection) {
+    selectedDataSourceName || "Attendees"
+  }).then(function (connection) {
   // check below for the list of instance methods for the connection object
 });
 
