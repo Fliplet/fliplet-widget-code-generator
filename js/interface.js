@@ -3,6 +3,9 @@ var selectedDataSourceName = null;
 var widgetId = Fliplet.Widget.getDefaultId();
 var dataSourceColumns = [];
 
+Fliplet.Widget.setSaveButtonLabel("Close");
+Fliplet.Widget.toggleCancelButton(false);
+
 Fliplet.Widget.generateInterface({
   fields: [
     {
@@ -77,9 +80,6 @@ Fliplet.Widget.generateInterface({
       ready: function () {
         $(this.$el).find(".generate-code").on("click", generateCode);
         toggleLoader(false);
-
-        Fliplet.Widget.setSaveButtonLabel("Close");
-        Fliplet.Widget.toggleCancelButton(false);
       },
     },
     {
