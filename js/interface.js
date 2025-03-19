@@ -183,13 +183,18 @@ You must only return code in the format specified. Do not return any text.
 
 If you get asked to use datasource js api for e.g. if you need to save data from a form to a datasource or need to read data dynamic data to show it on the screen you need to use the following API: 
 
+If the user has provided a selected data source then use that in your data source requests. If not do not assume any data source name. 
+
+User provided data source name: ${selectedDataSourceName}
+
+These are the list of columns in the data source selected by the user: ${dataSourceColumns}, you must one of these when referencing data from a data source. 
+
+
 ### Connect to a data source by Name
 
 You can also connect to a data source by its name (case-sensitive) using the 'connectByName' method.
 
-Fliplet.DataSources.connectByName(${
-    selectedDataSourceName || "Attendees"
-  }).then(function (connection) {
+Fliplet.DataSources.connectByName("Attendees").then(function (connection) {
   // check below for the list of instance methods for the connection object
 });
 
