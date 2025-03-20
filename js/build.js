@@ -167,6 +167,9 @@ Fliplet.Widget.instance({
             userId: userId,
             appId: appId,
             organizationId: organizationId,
+            pageId: pageId,
+            widgetId: widgetId
+          },
           }
         });
       }
