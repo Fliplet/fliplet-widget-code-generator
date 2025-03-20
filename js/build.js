@@ -129,6 +129,10 @@ Fliplet.Widget.instance({
             aiCssResponse: AI.fields.css,
             aiJsResponse: AI.fields.javascript,
             aiLayoutResponse: AI.fields.layoutHTML,
+            organizationId: organizationId,
+            pageId: pageId,
+            widgetId: widgetId,
+            appId: appId
           });
 
           // reload page preview
@@ -166,9 +170,7 @@ Fliplet.Widget.instance({
             data: data,
             userId: userId,
             appId: appId,
-            organizationId: organizationId,
-            pageId: pageId,
-            widgetId: widgetId
+            organizationId: organizationId
           }
         });
       }
