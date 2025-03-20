@@ -169,7 +169,6 @@ Fliplet.Widget.instance({
             organizationId: organizationId,
             pageId: pageId,
             widgetId: widgetId
-          },
           }
         });
       }
