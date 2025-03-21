@@ -60,13 +60,32 @@ Fliplet.Widget.generateInterface({
       },
     },
     {
+      type: "html",
+      html: `
+        <div class="panel-group" id="promptAccordion">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#promptAccordion" href="#collapseOne">
+                  How to use the AI Feature Generator
+                </a>
+              </h4>
+            </div>
+            <div id="collapseOne" class="panel-collapse collapse">
+              <div class="panel-body">
+                You can instruct the AI to reference the names of your data sources, perform joins with other data sources, and access the screen names and column names associated with the logged-in user's data.
+              </div>
+            </div>
+          </div>
+        </div>
+      `
+    },
+    {
       name: "prompt",
       type: "textarea",
       label: "Prompt",
       default: "",
       rows: 12,
-      description:
-        "You can ask AI to reference your data sources names, screens names and column names belonging to the logged in user's data.",
     },
     {
       type: "html",
@@ -434,7 +453,7 @@ Fliplet.User.getCachedSession().then(function (session) {
 
 If you are asked to join data across multiple data sources then use the below JS API:
 
-Both DataSources JS APIs and REST APIs allow you to fetch data from more than one dataSource using a featured called “join”, heavily inspired by traditional joins made in SQL databases.
+Both DataSources JS APIs and REST APIs allow you to fetch data from more than one dataSource using a featured called "join", heavily inspired by traditional joins made in SQL databases.
 
 Joins are defined by a unique name and their configuration options; any number of joins can be defined when fetching data from one data source:
 
@@ -450,7 +469,7 @@ Fliplet.DataSources.connect(123).then(function (connection) {
     }
   })
 }).then(console.log)
-Before we dive into complete examples, let’s start with the three types of joins we support.
+Before we dive into complete examples, let's start with the three types of joins we support.
 
 Types of joins
 Left join (default)
@@ -501,7 +520,7 @@ connection.find({
 Outer join
 Use this when you want to merge entries from the joined dataSource(s) to the ones being extracted from your dataSource. The result will simply be a concatenation of both arrays.
 
-Outer joins are similar to other joins in regards to how they are defined, but don’t need the on parameter defined since they don’t need to reference entries between the two dataSources:
+Outer joins are similar to other joins in regards to how they are defined, but don't need the on parameter defined since they don't need to reference entries between the two dataSources:
 
 connection.find({
   join: {
